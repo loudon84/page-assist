@@ -567,6 +567,9 @@
       "storageBlockedDescription": "Firefox 隐私模式不支持将数据保存到 IndexedDB。请从普通窗口管理 MCP 服务器。"
     }
   },
+  "enterprise": {
+    "title": "企业"
+  },
   "about": {
     "title": "关于",
     "heading": "关于",

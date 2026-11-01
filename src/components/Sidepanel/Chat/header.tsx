@@ -11,7 +11,8 @@ import {
   HistoryIcon,
   PlusSquare,
   XIcon,
-  MessageSquareShareIcon
+  MessageSquareShareIcon,
+  Building2 as Building2Icon
 } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { CurrentChatModelSettings } from "@/components/Common/Settings/CurrentChatModelSettings"
@@ -82,6 +83,15 @@ export const SidepanelHeader = ({
       </div>
 
       <div className="flex items-center space-x-3">
+        {import.meta.env.BROWSER !== "firefox" ? (
+          <Tooltip title={t("option:enterprise", "Enterprise")}>
+            <Link
+              to="/enterprise"
+              className="flex items-center space-x-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-700">
+              <Building2Icon className="size-4 text-gray-500 dark:text-gray-400" />
+            </Link>
+          </Tooltip>
+        ) : null}
         {webuiBtnSidePanel ? (
           <Tooltip title={t("tooltip.openwebui")}>
             <button

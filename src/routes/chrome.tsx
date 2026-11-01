@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router-dom"
 import OptionIndex from "./option-index"
 import OptionSettings from "./option-settings"
 import OptionModal from "./option-settings-model"
@@ -18,6 +18,24 @@ import OptionMCP from "./option-settings-mcp"
 import OptionMemory from "./option-settings-memory"
 import SidepanelSettingsOpenAI from "./sidepanel-settings-openai"
 import SidepanelSettingsModel from "./sidepanel-settings-model"
+import OptionEnterpriseSettings from "./option-settings-enterprise"
+import { EnterpriseRoot } from "@/components/Octop/EnterpriseRoot"
+import { LoginPage } from "@/components/Octop/LoginPage"
+import { ExpertCatalog } from "@/components/Octop/ExpertCatalog"
+import { ExpertChat } from "@/components/Octop/ExpertChat"
+
+const enterpriseRoutes = (
+  <Route element={<EnterpriseRoot />}>
+    <Route path="/enterprise" element={<Navigate to="/enterprise/experts" replace />} />
+    <Route path="/enterprise/login" element={<LoginPage />} />
+    <Route path="/enterprise/experts" element={<ExpertCatalog />} />
+    <Route path="/enterprise/experts/:expertKey" element={<ExpertChat mode="new" />} />
+    <Route
+      path="/enterprise/experts/:expertKey/threads/:threadId"
+      element={<ExpertChat mode="thread" />}
+    />
+  </Route>
+)
 
 export const OptionRoutingChrome = () => {
   return (
@@ -37,6 +55,8 @@ export const OptionRoutingChrome = () => {
       <Route path="/settings/knowledge" element={<OptionKnowledgeBase />} />
       <Route path="/settings/rag" element={<OptionRagSettings />} />
       <Route path="/settings/about" element={<OptionAbout />} />
+      <Route path="/settings/enterprise" element={<OptionEnterpriseSettings />} />
+      {enterpriseRoutes}
     </Routes>
   )
 }
@@ -48,6 +68,7 @@ export const SidepanelRoutingChrome = () => {
       <Route path="/settings" element={<SidepanelSettings />} />
       <Route path="/settings/openai" element={<SidepanelSettingsOpenAI />} />
       <Route path="/settings/model" element={<SidepanelSettingsModel />} />
+      {enterpriseRoutes}
     </Routes>
   )
 }

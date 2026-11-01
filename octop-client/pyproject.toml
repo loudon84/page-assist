@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "page-assist-octop-client"
+version = "1.0.0"
+description = "Page Assist OctopClient server module (Client API v1)"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Page Assist" }]
+dependencies = []
+
+[project.optional-dependencies]
+dev = []
+
+[project.scripts]
+page-assist-octop-client = "page_assist_octop_client.cli.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

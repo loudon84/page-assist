@@ -579,6 +579,9 @@
       "storageBlockedDescription": "Firefox Private Mode does not support saving data to IndexedDB. Please manage MCP servers from a normal window."
     }
   },
+  "enterprise": {
+    "title": "Enterprise"
+  },
   "about": {
     "title": "About",
     "heading": "About",

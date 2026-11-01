@@ -12,7 +12,8 @@ const chromeMV3Permissions = [
   "unlimitedStorage",
   "contextMenus",
   "tts",
-  "notifications"
+  "notifications",
+  "identity"
 ]
 
 const firefoxMV2Permissions = [

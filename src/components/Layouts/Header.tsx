@@ -8,7 +8,8 @@ import {
   GithubIcon,
   PanelLeftIcon,
   ZapIcon,
-  SaveIcon
+  SaveIcon,
+  Building2 as Building2Icon
 } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { useLocation, NavLink } from "react-router-dom"
@@ -118,6 +119,14 @@ export const Header: React.FC<Props> = ({
           </button>
         </div>
         <NewChat clearChat={clearChat} />
+        {import.meta.env.BROWSER !== "firefox" && (
+          <NavLink
+            to="/enterprise"
+            title={t("enterprise", "Enterprise")}
+            className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+            <Building2Icon className="w-5 h-5" />
+          </NavLink>
+        )}
         <span className="text-lg font-thin text-zinc-300 dark:text-zinc-600">
           {"/"}
         </span>

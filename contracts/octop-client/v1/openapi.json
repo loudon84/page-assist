@@ -1,0 +1,851 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Page Assist OctopClient API",
+    "version": "1.0.0",
+    "description": "Client API v1. Schema ID prefix urn:page-assist:octop-client:v1:"
+  },
+  "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
+  "servers": [{ "url": "/api/client/v1" }],
+  "paths": {
+    "/capabilities": {
+      "get": {
+        "operationId": "getCapabilities",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Capabilities",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Capabilities" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/transactions": {
+      "post": {
+        "operationId": "createAuthTransaction",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AuthTransactionRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Login transaction",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AuthTransactionResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/exchange": {
+      "post": {
+        "operationId": "exchangeAuthCode",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AuthExchangeRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Auth exchange",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AuthExchange" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/session": {
+      "get": {
+        "operationId": "getSession",
+        "security": [{ "ClientToken": [] }],
+        "responses": {
+          "200": {
+            "description": "Session",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Session" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteSession",
+        "security": [{ "ClientToken": [] }],
+        "responses": { "204": { "description": "Revoked" } }
+      }
+    },
+    "/experts": {
+      "get": {
+        "operationId": "listExperts",
+        "security": [{ "ClientToken": [] }],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "schema": { "type": "string", "enum": ["all", "local", "remote"] }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Expert page",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ExpertPage" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/experts/{key}/threads": {
+      "get": {
+        "operationId": "listThreads",
+        "security": [{ "ClientToken": [] }],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Thread page",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ThreadPage" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createThread",
+        "security": [{ "ClientToken": [] }],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {}
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Thread" }
+              }
+            }
+          },
+          "200": {
+            "description": "Idempotent replay",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Thread" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/experts/{key}/threads/{id}/history": {
+      "get": {
+        "operationId": "getHistory",
+        "security": [{ "ClientToken": [] }],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "History page",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HistoryPage" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/experts/{key}/threads/{id}/uploads": {
+      "post": {
+        "operationId": "uploadAttachment",
+        "security": [{ "ClientToken": [] }],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["file", "sha256"],
+                "properties": {
+                  "file": { "type": "string", "format": "binary" },
+                  "sha256": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Uploaded",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AttachmentRef" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ws-tickets": {
+      "post": {
+        "operationId": "createWsTicket",
+        "security": [{ "ClientToken": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["expertKey"],
+                "properties": { "expertKey": { "type": "string" } }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Ticket",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/WsTicket" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/experts/{key}/chat/ws": {
+      "get": {
+        "operationId": "chatWebSocket",
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "ticket",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "101": { "description": "Switching Protocols" } }
+      }
+    },
+    "/experts/{key}/threads/{id}/approvals": {
+      "post": {
+        "operationId": "resolveApproval",
+        "security": [{ "ClientToken": [] }],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ApprovalRequest" }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApprovalReceipt" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/experts/{key}/threads/{id}/approval-instructions": {
+      "get": {
+        "operationId": "getApprovalInstructions",
+        "security": [{ "ClientToken": [] }],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "pending_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Instructions",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApprovalInstructions" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ClientToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "octopc1"
+      }
+    },
+    "schemas": {
+      "Capabilities": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["protocol", "build", "instance_id", "auth", "features", "limits"],
+        "properties": {
+          "protocol": {
+            "type": "object",
+            "required": ["major", "minor"],
+            "properties": {
+              "major": { "type": "integer", "const": 1 },
+              "minor": { "type": "integer", "minimum": 0 }
+            }
+          },
+          "build": {
+            "type": "object",
+            "required": ["module_version", "host_api_version", "host_build_id", "ready"],
+            "properties": {
+              "module_version": { "type": "string" },
+              "host_api_version": { "type": "integer", "const": 1 },
+              "host_build_id": { "type": "string" },
+              "ready": { "type": "boolean" }
+            }
+          },
+          "instance_id": { "type": "string" },
+          "auth": {
+            "type": "object",
+            "required": ["mode", "session_ttl_seconds"],
+            "properties": {
+              "mode": { "type": "string", "const": "hosted_pkce" },
+              "session_ttl_seconds": { "type": "integer", "const": 28800 }
+            }
+          },
+          "features": {
+            "type": "object",
+            "required": [
+              "catalog_v1",
+              "independent_threads",
+              "history_v1",
+              "chat_ws_v1",
+              "uploads_v1",
+              "revocable_sessions"
+            ],
+            "properties": {
+              "catalog_v1": { "type": "boolean" },
+              "independent_threads": { "type": "boolean" },
+              "history_v1": { "type": "boolean" },
+              "chat_ws_v1": { "type": "boolean" },
+              "uploads_v1": { "type": "boolean" },
+              "revocable_sessions": { "type": "boolean" }
+            }
+          },
+          "limits": {
+            "type": "object",
+            "required": [
+              "question_utf8_bytes",
+              "context_utf8_bytes",
+              "turn_json_bytes",
+              "file_bytes",
+              "files_per_turn",
+              "files_total_bytes"
+            ],
+            "properties": {
+              "question_utf8_bytes": { "type": "integer", "maximum": 32768 },
+              "context_utf8_bytes": { "type": "integer", "maximum": 65536 },
+              "turn_json_bytes": { "type": "integer", "maximum": 131072 },
+              "file_bytes": { "type": "integer", "maximum": 10485760 },
+              "files_per_turn": { "type": "integer", "maximum": 5 },
+              "files_total_bytes": { "type": "integer", "maximum": 20971520 }
+            }
+          }
+        }
+      },
+      "Session": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "sid",
+          "instance_id",
+          "tenant_id",
+          "subject",
+          "display_name",
+          "expires_at",
+          "client_id",
+          "scopes"
+        ],
+        "properties": {
+          "sid": { "type": "string" },
+          "instance_id": { "type": "string" },
+          "tenant_id": { "type": "string" },
+          "subject": { "type": "string" },
+          "display_name": { "type": "string" },
+          "expires_at": { "type": "string", "format": "date-time" },
+          "client_id": { "type": "string" },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "experts:read",
+                "threads:read",
+                "threads:create",
+                "chat:send",
+                "chat:cancel",
+                "uploads:write",
+                "approvals:write"
+              ]
+            }
+          }
+        }
+      },
+      "AuthTransactionRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["client_id", "redirect_uri", "state", "code_challenge", "method"],
+        "properties": {
+          "client_id": { "type": "string" },
+          "redirect_uri": { "type": "string" },
+          "state": { "type": "string" },
+          "code_challenge": { "type": "string" },
+          "method": { "type": "string", "const": "S256" }
+        }
+      },
+      "AuthTransactionResponse": {
+        "type": "object",
+        "required": ["authorization_url", "expires_at"],
+        "properties": {
+          "authorization_url": { "type": "string" },
+          "expires_at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "AuthExchangeRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["client_id", "redirect_uri", "code", "code_verifier"],
+        "properties": {
+          "client_id": { "type": "string" },
+          "redirect_uri": { "type": "string" },
+          "code": { "type": "string" },
+          "code_verifier": { "type": "string" }
+        }
+      },
+      "AuthExchange": {
+        "type": "object",
+        "required": ["access_token", "token_type", "session"],
+        "properties": {
+          "access_token": { "type": "string" },
+          "token_type": { "type": "string", "const": "Bearer" },
+          "session": { "$ref": "#/components/schemas/Session" }
+        }
+      },
+      "Expert": {
+        "type": "object",
+        "required": [
+          "expertKey",
+          "name",
+          "description",
+          "avatar",
+          "kind",
+          "source",
+          "availability",
+          "unavailable_reason",
+          "capabilities"
+        ],
+        "properties": {
+          "expertKey": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "avatar": {
+            "type": "object",
+            "required": ["kind", "value"],
+            "properties": {
+              "kind": { "type": "string", "enum": ["emoji", "asset", "none"] },
+              "value": { "type": "string" }
+            }
+          },
+          "kind": { "type": "string", "const": "expert" },
+          "source": {
+            "type": "object",
+            "required": ["kind", "label"],
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": ["local", "bridge_personal", "bridge_shared"]
+              },
+              "label": { "type": "string" }
+            }
+          },
+          "availability": {
+            "type": "string",
+            "enum": ["available", "offline", "forbidden", "unsupported"]
+          },
+          "unavailable_reason": { "type": ["string", "null"] },
+          "capabilities": {
+            "type": "object",
+            "required": [
+              "create_thread",
+              "chat",
+              "attachments",
+              "approval_in_client",
+              "approval_mode"
+            ],
+            "properties": {
+              "create_thread": { "type": "boolean" },
+              "chat": { "type": "boolean" },
+              "attachments": { "type": "boolean" },
+              "approval_in_client": { "type": "boolean" },
+              "approval_mode": {
+                "type": "string",
+                "enum": ["in_client", "external_instructions", "none"]
+              }
+            }
+          }
+        }
+      },
+      "ExpertPage": {
+        "type": "object",
+        "required": ["items", "next_cursor"],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Expert" }
+          },
+          "next_cursor": { "type": ["string", "null"] }
+        }
+      },
+      "RuntimeState": {
+        "type": "object",
+        "required": ["state", "turn_id", "pending_id", "last_outcome"],
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": ["idle", "running", "awaiting_approval", "interrupted"]
+          },
+          "turn_id": { "type": ["string", "null"] },
+          "pending_id": { "type": ["string", "null"] },
+          "last_outcome": { "type": ["string", "null"] }
+        }
+      },
+      "Thread": {
+        "type": "object",
+        "required": [
+          "thread_id",
+          "expertKey",
+          "channel_type",
+          "title",
+          "created_at",
+          "updated_at",
+          "runtime"
+        ],
+        "properties": {
+          "thread_id": { "type": "string" },
+          "expertKey": { "type": "string" },
+          "channel_type": { "type": "string", "const": "page_assist" },
+          "title": { "type": "string" },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" },
+          "runtime": { "$ref": "#/components/schemas/RuntimeState" }
+        }
+      },
+      "ThreadPage": {
+        "type": "object",
+        "required": ["items", "next_cursor"],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Thread" }
+          },
+          "next_cursor": { "type": ["string", "null"] }
+        }
+      },
+      "Part": {
+        "type": "object",
+        "required": ["kind", "data"],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": ["text", "tool_call", "tool_result", "attachment", "reasoning_summary"]
+          },
+          "data": true
+        }
+      },
+      "HistoryMessage": {
+        "type": "object",
+        "required": ["message_id", "order", "role", "parts", "created_at", "client_request_id"],
+        "properties": {
+          "message_id": { "type": "string" },
+          "order": { "type": "integer" },
+          "role": { "type": "string", "enum": ["user", "assistant", "tool", "system"] },
+          "parts": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Part" }
+          },
+          "created_at": { "type": "string", "format": "date-time" },
+          "client_request_id": { "type": ["string", "null"] }
+        }
+      },
+      "HistoryPage": {
+        "type": "object",
+        "required": ["thread_id", "items", "next_cursor", "history_revision", "runtime"],
+        "properties": {
+          "thread_id": { "type": "string" },
+          "items": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/HistoryMessage" }
+          },
+          "next_cursor": { "type": ["string", "null"] },
+          "history_revision": { "type": "string" },
+          "runtime": { "$ref": "#/components/schemas/RuntimeState" }
+        }
+      },
+      "AttachmentRef": {
+        "type": "object",
+        "required": [
+          "upload_id",
+          "thread_id",
+          "expertKey",
+          "filename",
+          "media_type",
+          "bytes",
+          "sha256",
+          "expires_at",
+          "state"
+        ],
+        "properties": {
+          "upload_id": { "type": "string" },
+          "thread_id": { "type": "string" },
+          "expertKey": { "type": "string" },
+          "filename": { "type": "string" },
+          "media_type": { "type": "string" },
+          "bytes": { "type": "integer" },
+          "sha256": { "type": "string" },
+          "expires_at": { "type": "string", "format": "date-time" },
+          "state": { "type": "string", "enum": ["ready", "attached", "expired"] }
+        }
+      },
+      "WsTicket": {
+        "type": "object",
+        "required": ["ticket", "expires_at", "ws_url"],
+        "properties": {
+          "ticket": { "type": "string" },
+          "expires_at": { "type": "string", "format": "date-time" },
+          "ws_url": { "type": "string" }
+        }
+      },
+      "ApprovalDecision": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["item_id", "type"],
+            "properties": {
+              "item_id": { "type": "string" },
+              "type": { "type": "string", "const": "approve" }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["item_id", "type", "reason"],
+            "properties": {
+              "item_id": { "type": "string" },
+              "type": { "type": "string", "const": "reject" },
+              "reason": { "type": "string" }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["item_id", "type", "answers"],
+            "properties": {
+              "item_id": { "type": "string" },
+              "type": { "type": "string", "const": "respond" },
+              "answers": { "type": "object" }
+            }
+          }
+        ]
+      },
+      "ApprovalRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["pending_id", "decision_id", "decisions"],
+        "properties": {
+          "pending_id": { "type": "string" },
+          "decision_id": { "type": "string", "format": "uuid" },
+          "decisions": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ApprovalDecision" }
+          }
+        }
+      },
+      "ApprovalReceipt": {
+        "type": "object",
+        "required": ["decision_id", "status"],
+        "properties": {
+          "decision_id": { "type": "string" },
+          "status": { "type": "string", "const": "accepted" }
+        }
+      },
+      "ApprovalInstructions": {
+        "type": "object",
+        "required": ["pending_id", "source_label", "entry_url", "instructions"],
+        "properties": {
+          "pending_id": { "type": "string" },
+          "source_label": { "type": "string" },
+          "entry_url": { "type": "string" },
+          "instructions": { "type": "string" }
+        }
+      },
+      "ErrorEnvelope": {
+        "type": "object",
+        "required": ["error"],
+        "properties": {
+          "error": {
+            "type": "object",
+            "required": ["code", "message", "retryable", "request_id", "details"],
+            "properties": {
+              "code": { "type": "string" },
+              "message": { "type": "string" },
+              "retryable": { "type": "boolean" },
+              "request_id": { "type": "string", "format": "uuid" },
+              "details": { "type": "object" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

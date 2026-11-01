@@ -1,0 +1,60 @@
+{
+  "$id": "urn:page-assist:octop-client:v1:release",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OctopClient dual-artifact release manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "release_id",
+    "protocol",
+    "page_assist_sha",
+    "octop_baseline_sha",
+    "module_version",
+    "host_api_version",
+    "artifacts"
+  ],
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "release_id": { "type": "string" },
+    "protocol": {
+      "type": "object",
+      "required": ["major", "minor"],
+      "properties": {
+        "major": { "type": "integer", "const": 1 },
+        "minor": { "type": "integer" }
+      }
+    },
+    "page_assist_sha": { "type": "string" },
+    "octop_baseline_sha": { "type": "string" },
+    "octop_patched_sha": { "type": ["string", "null"] },
+    "module_version": { "type": "string" },
+    "host_api_version": { "type": "integer", "const": 1 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["browser", "wheel"],
+      "properties": {
+        "browser": {
+          "type": "object",
+          "required": ["filename", "sha256", "target"],
+          "properties": {
+            "filename": { "type": "string" },
+            "sha256": { "type": "string" },
+            "target": { "type": "string", "enum": ["chrome", "edge", "firefox"] }
+          }
+        },
+        "wheel": {
+          "type": "object",
+          "required": ["filename", "sha256"],
+          "properties": {
+            "filename": { "type": "string" },
+            "sha256": { "type": "string" }
+          }
+        }
+      }
+    },
+    "sbom_sha256": { "type": ["string", "null"] }
+  }
+}

@@ -1,0 +1,14 @@
+schema_version = 1
+enabled = false
+public_origin = "https://octop.example.internal"
+host_api_version = 1
+worker_count = 1
+session_ttl_seconds = 28800
+log_level = "INFO"
+
+# state_root is injected by the host at register() time and is not set here.
+
+[[allowed_clients]]
+client_id = "page-assist-chrome"
+extension_origin = "chrome-extension://abcdefghijklmnopqrstuvwxyz123456"
+redirect_uri = "https://abcdefghijklmnopqrstuvwxyz123456.chromiumapp.org/"

@@ -1,0 +1,65 @@
+{
+  "$id": "urn:page-assist:octop-client:v1:events",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OctopClient WebSocket envelopes",
+  "oneOf": [
+    { "$ref": "#/$defs/CommandEnvelope" },
+    { "$ref": "#/$defs/EventEnvelope" }
+  ],
+  "$defs": {
+    "CommandEnvelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["v", "type", "request_id", "thread_id", "payload"],
+      "properties": {
+        "v": { "type": "integer", "const": 1 },
+        "type": { "type": "string", "enum": ["subscribe", "user_turn", "cancel", "ping"] },
+        "request_id": { "type": "string", "format": "uuid" },
+        "thread_id": { "type": ["string", "null"] },
+        "payload": { "type": "object" }
+      }
+    },
+    "EventEnvelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "v",
+        "connection_id",
+        "seq",
+        "type",
+        "thread_id",
+        "turn_id",
+        "client_request_id",
+        "payload"
+      ],
+      "properties": {
+        "v": { "type": "integer", "const": 1 },
+        "connection_id": { "type": "string" },
+        "seq": { "type": "integer", "minimum": 1 },
+        "type": {
+          "type": "string",
+          "enum": [
+            "submission.accepted",
+            "turn.started",
+            "turn.resumed",
+            "message.delta",
+            "reasoning.summary",
+            "tool.call",
+            "tool.result",
+            "approval.required",
+            "usage",
+            "turn.ended",
+            "thread.status",
+            "error",
+            "pong"
+          ]
+        },
+        "thread_id": { "type": ["string", "null"] },
+        "turn_id": { "type": ["string", "null"] },
+        "client_request_id": { "type": ["string", "null"] },
+        "payload": { "type": "object" },
+        "optional": { "type": "boolean" }
+      }
+    }
+  }
+}

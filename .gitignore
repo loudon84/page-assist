@@ -54,3 +54,11 @@ package-lock.json
 .agents
 .claude
 skills-lock.json
+
+# Enterprise acceptance evidence
+/artifacts/
+
+# Python
+**/__pycache__/
+**/.pytest_cache/
+pytest-cache-files-*/

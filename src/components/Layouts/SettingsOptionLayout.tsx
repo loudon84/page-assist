@@ -11,6 +11,7 @@ import {
   BrainIcon,
   MousePointerClickIcon,
   PlugZapIcon,
+  Building2 as Building2Icon,
 } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { Link, useLocation } from "react-router-dom"
@@ -88,6 +89,14 @@ export const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
                       icon={PlugZapIcon}
                       current={location.pathname}
                       beta
+                    />
+                  )}
+                  {import.meta.env.BROWSER !== "firefox" && (
+                    <LinkComponent
+                      href="/settings/enterprise"
+                      name={t("enterprise.title", "Enterprise")}
+                      icon={Building2Icon}
+                      current={location.pathname}
                     />
                   )}
                   <LinkComponent

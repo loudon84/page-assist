@@ -1,0 +1,129 @@
+{
+  "$id": "urn:page-assist:octop-client:v1:evidence",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Acceptance evidence run.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "acceptance_id",
+    "requirement_ids",
+    "test_id",
+    "mode",
+    "status",
+    "reason",
+    "source",
+    "artifacts_identity",
+    "execution",
+    "assertions",
+    "state_digests",
+    "artifacts"
+  ],
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "run_id": { "type": "string" },
+    "acceptance_id": { "type": "string" },
+    "requirement_ids": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "test_id": { "type": "string" },
+    "mode": { "type": "string", "enum": ["fixture", "live", "document"] },
+    "status": { "type": "string", "enum": ["PASS", "FAIL", "SKIPPED", "BLOCKED"] },
+    "reason": { "type": "string" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "page_assist_sha",
+        "octop_baseline_sha",
+        "octop_patched_sha",
+        "branch",
+        "dirty",
+        "dirty_manifest_sha256"
+      ],
+      "properties": {
+        "page_assist_sha": { "type": "string" },
+        "octop_baseline_sha": { "type": "string" },
+        "octop_patched_sha": { "type": ["string", "null"] },
+        "branch": { "type": "string" },
+        "dirty": { "type": "boolean" },
+        "dirty_manifest_sha256": { "type": ["string", "null"] }
+      }
+    },
+    "artifacts_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["browser_sha256", "wheel_sha256", "release_manifest_sha256"],
+      "properties": {
+        "browser_sha256": { "type": ["string", "null"] },
+        "wheel_sha256": { "type": ["string", "null"] },
+        "release_manifest_sha256": { "type": ["string", "null"] }
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "command_argv",
+        "cwd",
+        "started_at",
+        "finished_at",
+        "exit_code",
+        "tool_versions",
+        "environment_id"
+      ],
+      "properties": {
+        "command_argv": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "cwd": { "type": "string" },
+        "started_at": { "type": "string", "format": "date-time" },
+        "finished_at": { "type": "string", "format": "date-time" },
+        "exit_code": { "type": "integer" },
+        "tool_versions": { "type": "object" },
+        "environment_id": { "type": "string" }
+      }
+    },
+    "assertions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "passed", "expected", "actual"],
+        "properties": {
+          "name": { "type": "string" },
+          "passed": { "type": "boolean" },
+          "expected": true,
+          "actual": true
+        }
+      }
+    },
+    "state_digests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "sha256"],
+        "properties": {
+          "name": { "type": "string" },
+          "sha256": { "type": "string" }
+        }
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": { "type": "string" },
+          "sha256": { "type": "string" }
+        }
+      }
+    }
+  }
+}

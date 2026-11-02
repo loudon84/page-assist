@@ -203,6 +203,7 @@ export type OctopEvent = {
 }
 
 export type ConversationConnection = {
+  waitOpen(): Promise<void>
   subscribe(threadId: string): Promise<void>
   sendTurn(input: {
     threadId: string

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-SCHEMA_VERSION = 1
-SCHEMA_CHECKSUM = "paoc-schema-v1"
+SCHEMA_VERSION = 2
+SCHEMA_CHECKSUM = "paoc-schema-v2"
 
 MIGRATIONS: list[tuple[int, str]] = [
     (
@@ -141,5 +141,16 @@ CREATE TABLE IF NOT EXISTS paoc_message_projection (
   UNIQUE(thread_id, ord)
 );
 """,
-    )
+    ),
+    (
+        2,
+        """
+ALTER TABLE paoc_thread_metadata ADD COLUMN history_revision TEXT NOT NULL DEFAULT '0';
+ALTER TABLE paoc_thread_metadata ADD COLUMN runtime_revision TEXT NOT NULL DEFAULT '0';
+ALTER TABLE paoc_personal_bindings ADD COLUMN peer_identity_key TEXT NOT NULL DEFAULT '';
+CREATE UNIQUE INDEX IF NOT EXISTS paoc_peer_active_binding
+  ON paoc_personal_bindings(peer_instance_id, peer_subject)
+  WHERE invalidated_at IS NULL;
+""",
+    ),
 ]

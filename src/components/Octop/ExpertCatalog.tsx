@@ -11,6 +11,7 @@ export const ExpertCatalog = () => {
   const [source, setSource] = useState<CatalogSource>("all")
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [cursor, setCursor] = useState<string | null>(null)
   const navigate = useNavigate()
 
   const load = async (cursor?: string, append = false) => {
@@ -19,6 +20,7 @@ export const ExpertCatalog = () => {
     try {
       const page = await octopApi.listExperts({ q: q || undefined, source, cursor })
       setItems((prev) => (append ? [...prev, ...page.items] : page.items))
+      setCursor(page.next_cursor || null)
     } catch (err) {
       setError(err instanceof Error ? err.message : "catalog failed")
     } finally {
@@ -75,17 +77,31 @@ export const ExpertCatalog = () => {
                     <div className="text-xs text-amber-600 mt-1">{expert.unavailable_reason}</div>
                   ) : null}
                 </div>
-                <Button
-                  type="primary"
-                  disabled={disabled}
-                  onClick={() => navigate(`/enterprise/experts/${encodeURIComponent(expert.expertKey)}`)}>
-                  Open
-                </Button>
+                <div className="flex flex-col gap-2">
+                  <Button
+                    type="primary"
+                    disabled={disabled}
+                    onClick={() => navigate(`/enterprise/experts/${encodeURIComponent(expert.expertKey)}`)}>
+                    Open
+                  </Button>
+                  <Button
+                    disabled={disabled}
+                    onClick={() =>
+                      navigate(`/enterprise/experts/${encodeURIComponent(expert.expertKey)}?view=threads`)
+                    }>
+                    Threads
+                  </Button>
+                </div>
               </div>
             </div>
           )
         })}
       </div>
+      {cursor ? (
+        <Button onClick={() => void load(cursor, true)} disabled={loading}>
+          Load more
+        </Button>
+      ) : null}
     </div>
   )
 }

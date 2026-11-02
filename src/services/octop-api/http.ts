@@ -9,7 +9,7 @@ export const clientFetch = async (
   init: RequestInit,
   options?: { retries?: boolean }
 ): Promise<Response> => {
-  const retries = options?.retries ?? init.method === "GET" || !init.method
+  const retries = (options?.retries) ?? (init.method === "GET" || !init.method)
   const maxAttempts = retries ? 3 : 1
   let lastError: unknown
   for (let attempt = 0; attempt < maxAttempts; attempt += 1) {

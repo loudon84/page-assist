@@ -1,0 +1,30 @@
+{
+  "instance_role": "hub",
+  "instance_id": "octop-hub-example",
+  "releases_root": "/var/lib/octop/releases",
+  "state_root": "/var/lib/octop/state",
+  "db_identity": "sqlite:/var/lib/octop/state/octop.sqlite",
+  "python": "/usr/bin/python3.12",
+  "unit": "octop.service",
+  "service_user": "octop",
+  "expected_exec_argv": ["/usr/bin/python3.12", "-m", "octop"],
+  "public_origin": "https://octop.example.internal",
+  "health_probe": "https://octop.example.internal/api/health",
+  "client_registrations": [
+    {
+      "client_id": "page-assist-chrome",
+      "extension_origin": "chrome-extension://abcdefghijklmnopqrstuvwxyz123456"
+    }
+  ],
+  "baseline_release": "b1-rc1",
+  "baseline_manifest_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "release_manifest": "/var/lib/octop/releases/b1-rc1/manifest.json",
+  "wheelhouse": "/var/lib/octop/releases/b1-rc1/wheelhouse",
+  "requirements_lock": "/var/lib/octop/releases/b1-rc1/requirements.lock",
+  "config": "/var/lib/octop/state/extensions/octop-client/config.json",
+  "secret_references": ["jwt"],
+  "live_test_identities": {
+    "hub": { "username": "REDACTED" },
+    "peer": { "username": "REDACTED" }
+  }
+}

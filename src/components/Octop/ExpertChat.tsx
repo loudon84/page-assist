@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { Button, Input, Upload } from "antd"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { octopApi } from "@/services/octop-api"
 import type {
   ApprovalPending,
@@ -12,6 +12,7 @@ import type {
 import { isBusyState, DEFAULT_QUESTION } from "@/hooks/octop/state"
 import { usePageSnapshot } from "@/hooks/octop/usePageSnapshot"
 import { StateBanner } from "./StateBanner"
+import { ThreadList } from "./ThreadList"
 
 const SafeMarkdown = ({ text }: { text: string }) => {
   const cleaned = text.replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "")
@@ -21,6 +22,7 @@ const SafeMarkdown = ({ text }: { text: string }) => {
 export const ExpertChat = ({ mode }: { mode: "new" | "thread" }) => {
   const { expertKey = "", threadId: routeThreadId } = useParams()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const decodedKey = decodeURIComponent(expertKey)
   const [threadId, setThreadId] = useState(routeThreadId || "")
   const [messages, setMessages] = useState<HistoryMessage[]>([])
@@ -62,6 +64,7 @@ export const ExpertChat = ({ mode }: { mode: "new" | "thread" }) => {
   }
 
   const connection = useMemo(() => octopApi.connect({ expertKey: decodedKey }), [decodedKey])
+  const createKey = useRef(crypto.randomUUID())
 
   useEffect(() => {
     let cancelled = false
@@ -89,7 +92,7 @@ export const ExpertChat = ({ mode }: { mode: "new" | "thread" }) => {
       }
       connection.close()
     }
-  }, [connection, decodedKey, threadId])
+  }, [connection, decodedKey])
 
   const applyEvent = (event: OctopEvent) => {
     const type = event.type as OctopEventType
@@ -147,13 +150,15 @@ export const ExpertChat = ({ mode }: { mode: "new" | "thread" }) => {
         setState("CREATING")
         const created = await octopApi.createThread({
           expertKey: decodedKey,
-          requestId: crypto.randomUUID()
+          requestId: createKey.current
         })
         currentThread = created.thread_id
         setThreadId(currentThread)
         navigate(`/enterprise/experts/${encodeURIComponent(decodedKey)}/threads/${currentThread}`, {
           replace: true
         })
+        await connection.waitOpen()
+        await connection.subscribe(currentThread)
       }
       const uploadIds: string[] = []
       if (files.length) {
@@ -200,6 +205,10 @@ export const ExpertChat = ({ mode }: { mode: "new" | "thread" }) => {
     } catch {
       setState("UNKNOWN")
     }
+  }
+
+  if (searchParams.get("view") === "threads") {
+    return <ThreadList expertKey={decodedKey} />
   }
 
   return (

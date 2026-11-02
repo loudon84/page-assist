@@ -23,9 +23,15 @@ def connect(path: Path) -> sqlite3.Connection:
 
 
 class Store:
-    def __init__(self, db_path: Path) -> None:
+    def __init__(self, db_path: Path, host: Any | None = None) -> None:
         self.db_path = db_path
-        self.conn = connect(db_path)
+        self.host = host
+        if host is not None and hasattr(host, "shared_connection"):
+            self.conn = host.shared_connection()
+            self._owns_connection = False
+        else:
+            self.conn = connect(db_path)
+            self._owns_connection = True
         self._migration_application_count = 0
         self.injections: dict[str, Any] = {}
         self.injection_observed: dict[str, bool] = {}
@@ -35,6 +41,8 @@ class Store:
         self.injection_observed[key] = True
 
     def close(self) -> None:
+        if not self._owns_connection:
+            return
         try:
             self.conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")
         except sqlite3.Error:
@@ -58,6 +66,18 @@ class Store:
 
     @contextmanager
     def txn(self) -> Iterator[sqlite3.Connection]:
+        if self.host is not None and getattr(self.host, "_uow_conn", None) is not None:
+            if self.injections.get("fail_before_first_write") and self.write_count == 0:
+                self.mark_observed("fail_before_first_write")
+                raise RuntimeError("injected failure before first write")
+            yield self.host._uow_conn
+            if self.injections.get("fail_before_commit"):
+                self.mark_observed("fail_before_commit")
+                raise RuntimeError("injected failure before commit")
+            if self.injections.get("fail_after_commit"):
+                self.mark_observed("fail_after_commit")
+                raise RuntimeError("injected failure after commit")
+            return
         if self.injections.get("fail_before_first_write") and self.write_count == 0:
             self.mark_observed("fail_before_first_write")
             raise RuntimeError("injected failure before first write")
@@ -83,36 +103,49 @@ class Store:
 
     def migrate(self) -> dict[str, Any]:
         existing = self.conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='paoc_schema_version'").fetchone()
+        current = 0
+        checksum = None
         if existing:
             row = self.conn.execute("SELECT * FROM paoc_schema_version WHERE id=1").fetchone()
-            if row and int(row["version"]) == SCHEMA_VERSION:
-                self.conn.execute(
-                    "UPDATE paoc_schema_version SET application_count = application_count + 1 WHERE id=1"
-                )
-                self._migration_application_count = int(row["application_count"]) + 1
-                return {
-                    "applied": False,
-                    "version": SCHEMA_VERSION,
-                    "migration_application_count": self._migration_application_count,
-                }
-        for index, (_version, sql) in enumerate(MIGRATIONS):
+            if row:
+                current = int(row["version"])
+                checksum = str(row["checksum"])
+                if current == SCHEMA_VERSION:
+                    if checksum != SCHEMA_CHECKSUM:
+                        raise RuntimeError("schema checksum conflict")
+                    self.conn.execute(
+                        "UPDATE paoc_schema_version SET application_count = application_count + 1 WHERE id=1"
+                    )
+                    self._migration_application_count = int(row["application_count"]) + 1
+                    return {
+                        "applied": False,
+                        "version": SCHEMA_VERSION,
+                        "migration_application_count": self._migration_application_count,
+                    }
+                if current > SCHEMA_VERSION:
+                    raise RuntimeError("schema newer than module")
+        applied = False
+        for index, (version, sql) in enumerate(MIGRATIONS):
+            if version <= current:
+                continue
             if self.injections.get("fail_during_migrate") and index == 0:
                 self.conn.executescript(sql)
                 self.mark_observed("fail_during_migrate")
                 raise RuntimeError("injected migrate failure")
             self.conn.executescript(sql)
+            applied = True
         now = rfc3339()
         self.conn.execute(
             """
             INSERT INTO paoc_schema_version(id, version, checksum, applied_at, reader_min, writer_min, application_count)
             VALUES (1, ?, ?, ?, ?, ?, 1)
-            ON CONFLICT(id) DO UPDATE SET version=excluded.version
+            ON CONFLICT(id) DO UPDATE SET version=excluded.version, checksum=excluded.checksum, applied_at=excluded.applied_at, reader_min=excluded.reader_min, writer_min=excluded.writer_min
             """,
             (SCHEMA_VERSION, SCHEMA_CHECKSUM, now, SCHEMA_VERSION, SCHEMA_VERSION),
         )
         self._migration_application_count = 1
         return {
-            "applied": True,
+            "applied": applied,
             "version": SCHEMA_VERSION,
             "migration_application_count": 1,
         }

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://page-assist.local/contracts/octop-client/v1/deployment-input.schema.json",
+  "title": "OctopClient B1 deployment input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "instance_role",
+    "instance_id",
+    "releases_root",
+    "state_root",
+    "db_identity",
+    "python",
+    "unit",
+    "service_user",
+    "expected_exec_argv",
+    "public_origin",
+    "health_probe",
+    "client_registrations",
+    "baseline_release",
+    "baseline_manifest_sha256",
+    "release_manifest",
+    "wheelhouse",
+    "requirements_lock",
+    "config",
+    "secret_references",
+    "live_test_identities"
+  ],
+  "properties": {
+    "instance_role": { "enum": ["hub", "peer"] },
+    "instance_id": { "type": "string", "minLength": 1 },
+    "releases_root": { "type": "string", "minLength": 1 },
+    "state_root": { "type": "string", "minLength": 1 },
+    "db_identity": { "type": "string", "minLength": 1 },
+    "python": { "type": "string", "minLength": 1 },
+    "unit": { "type": "string", "minLength": 1 },
+    "service_user": { "type": "string", "minLength": 1 },
+    "expected_exec_argv": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "public_origin": { "type": "string", "format": "uri" },
+    "health_probe": { "type": "string", "minLength": 1 },
+    "client_registrations": { "type": "array", "minItems": 1 },
+    "baseline_release": { "type": "string", "minLength": 1 },
+    "baseline_manifest_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "release_manifest": { "type": "string", "minLength": 1 },
+    "wheelhouse": { "type": "string", "minLength": 1 },
+    "requirements_lock": { "type": "string", "minLength": 1 },
+    "config": { "type": "string", "minLength": 1 },
+    "secret_references": { "type": "array" },
+    "live_test_identities": {
+      "type": "object",
+      "required": ["hub", "peer"],
+      "properties": {
+        "hub": { "type": "object" },
+        "peer": { "type": "object" }
+      }
+    }
+  }
+}

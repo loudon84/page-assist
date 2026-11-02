@@ -1,0 +1,3884 @@
+{
+  "schema_version": 2,
+  "prd_id": "PRD-PA-OCTOP-B-CLOSURE-001",
+  "prd_sha256": "e64a30866307104a4d026488a9222b92c4c1d001290f49a7676957b1f084f2b9",
+  "baseline_prd_blob": "356f2c2e61a17c032407ede047846840f8c61866",
+  "page_assist_baseline_sha": "ff1df1ce4df8b3d12be231fb40857fd3a46fc88c",
+  "octop_baseline_sha": "e3041c452ffc870f754378bd99d964349580d3f9",
+  "acceptances": [
+    {
+      "id": "A-CONFIG-001",
+      "requirement_ids": [
+        "REQ-CONFIG-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CONFIG-002",
+      "requirement_ids": [
+        "REQ-CONFIG-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CONFIG-003",
+      "requirement_ids": [
+        "REQ-CONFIG-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-AUTH-001",
+      "requirement_ids": [
+        "REQ-AUTH-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-AUTH-002",
+      "requirement_ids": [
+        "REQ-AUTH-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-AUTH-003",
+      "requirement_ids": [
+        "REQ-AUTH-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-SESSION-001",
+      "requirement_ids": [
+        "REQ-SESSION-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-SESSION-002",
+      "requirement_ids": [
+        "REQ-SESSION-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-SESSION-003",
+      "requirement_ids": [
+        "REQ-SESSION-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-UI-001",
+      "requirement_ids": [
+        "REQ-UI-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID"
+      ]
+    },
+    {
+      "id": "A-UI-002",
+      "requirement_ids": [
+        "REQ-UI-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID"
+      ]
+    },
+    {
+      "id": "A-UI-003",
+      "requirement_ids": [
+        "REQ-UI-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID"
+      ]
+    },
+    {
+      "id": "A-CATALOG-001",
+      "requirement_ids": [
+        "REQ-CATALOG-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-CATALOG-002",
+      "requirement_ids": [
+        "REQ-CATALOG-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-CATALOG-003",
+      "requirement_ids": [
+        "REQ-CATALOG-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-CLIENT-001",
+      "requirement_ids": [
+        "REQ-CLIENT-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-CLIENT-002",
+      "requirement_ids": [
+        "REQ-CLIENT-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-CLIENT-003",
+      "requirement_ids": [
+        "REQ-CLIENT-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-HOST-001",
+      "requirement_ids": [
+        "REQ-HOST-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-HOST-002",
+      "requirement_ids": [
+        "REQ-HOST-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-HOST-003",
+      "requirement_ids": [
+        "REQ-HOST-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-PACKAGE-001",
+      "requirement_ids": [
+        "REQ-PACKAGE-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "build"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BUILD",
+        "G-EVID"
+      ]
+    },
+    {
+      "id": "A-PACKAGE-002",
+      "requirement_ids": [
+        "REQ-PACKAGE-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID"
+      ]
+    },
+    {
+      "id": "A-PACKAGE-003",
+      "requirement_ids": [
+        "REQ-PACKAGE-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID"
+      ]
+    },
+    {
+      "id": "A-DEPLOY-001",
+      "requirement_ids": [
+        "REQ-DEPLOY-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-DEPLOY",
+        "G-EVID",
+        "G-LIVE"
+      ]
+    },
+    {
+      "id": "A-DEPLOY-002",
+      "requirement_ids": [
+        "REQ-DEPLOY-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-DEPLOY",
+        "G-EVID"
+      ]
+    },
+    {
+      "id": "A-DEPLOY-003",
+      "requirement_ids": [
+        "REQ-DEPLOY-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-DEPLOY",
+        "G-EVID",
+        "G-LIVE"
+      ]
+    },
+    {
+      "id": "A-UPGRADE-001",
+      "requirement_ids": [
+        "REQ-UPGRADE-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-DEPLOY",
+        "G-EVID"
+      ]
+    },
+    {
+      "id": "A-UPGRADE-002",
+      "requirement_ids": [
+        "REQ-UPGRADE-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-DEPLOY",
+        "G-EVID",
+        "G-LIVE"
+      ]
+    },
+    {
+      "id": "A-UPGRADE-003",
+      "requirement_ids": [
+        "REQ-UPGRADE-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-DEPLOY",
+        "G-EVID",
+        "G-LIVE"
+      ]
+    },
+    {
+      "id": "A-THREAD-001",
+      "requirement_ids": [
+        "REQ-THREAD-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-THREAD-002",
+      "requirement_ids": [
+        "REQ-THREAD-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-THREAD-003",
+      "requirement_ids": [
+        "REQ-THREAD-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-TURN-001",
+      "requirement_ids": [
+        "REQ-TURN-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-TURN-002",
+      "requirement_ids": [
+        "REQ-TURN-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-TURN-003",
+      "requirement_ids": [
+        "REQ-TURN-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-RECOVER-001",
+      "requirement_ids": [
+        "REQ-RECOVER-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-RECOVER-002",
+      "requirement_ids": [
+        "REQ-RECOVER-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-RECOVER-003",
+      "requirement_ids": [
+        "REQ-RECOVER-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-HITL-001",
+      "requirement_ids": [
+        "REQ-HITL-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-HITL-002",
+      "requirement_ids": [
+        "REQ-HITL-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-HITL-003",
+      "requirement_ids": [
+        "REQ-HITL-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CONTEXT-001",
+      "requirement_ids": [
+        "REQ-CONTEXT-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID"
+      ]
+    },
+    {
+      "id": "A-CONTEXT-002",
+      "requirement_ids": [
+        "REQ-CONTEXT-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID"
+      ]
+    },
+    {
+      "id": "A-CONTEXT-003",
+      "requirement_ids": [
+        "REQ-CONTEXT-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID"
+      ]
+    },
+    {
+      "id": "A-FILE-001",
+      "requirement_ids": [
+        "REQ-FILE-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-FILE-002",
+      "requirement_ids": [
+        "REQ-FILE-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-FILE-003",
+      "requirement_ids": [
+        "REQ-FILE-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-DATA-001",
+      "requirement_ids": [
+        "REQ-DATA-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-DATA-002",
+      "requirement_ids": [
+        "REQ-DATA-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-DATA-003",
+      "requirement_ids": [
+        "REQ-DATA-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-BRIDGE-001",
+      "requirement_ids": [
+        "REQ-BRIDGE-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-BRIDGE-002",
+      "requirement_ids": [
+        "REQ-BRIDGE-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-BRIDGE-003",
+      "requirement_ids": [
+        "REQ-BRIDGE-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-COMPAT-001",
+      "requirement_ids": [
+        "REQ-COMPAT-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-LIVE"
+      ]
+    },
+    {
+      "id": "A-COMPAT-002",
+      "requirement_ids": [
+        "REQ-COMPAT-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID"
+      ]
+    },
+    {
+      "id": "A-COMPAT-003",
+      "requirement_ids": [
+        "REQ-COMPAT-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "build"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-BUILD",
+        "G-EVID"
+      ]
+    },
+    {
+      "id": "A-SEC-001",
+      "requirement_ids": [
+        "REQ-SEC-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-SEC-002",
+      "requirement_ids": [
+        "REQ-SEC-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-SEC-003",
+      "requirement_ids": [
+        "REQ-SEC-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-OBS-001",
+      "requirement_ids": [
+        "REQ-OBS-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID"
+      ]
+    },
+    {
+      "id": "A-OBS-002",
+      "requirement_ids": [
+        "REQ-OBS-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID"
+      ]
+    },
+    {
+      "id": "A-OBS-003",
+      "requirement_ids": [
+        "REQ-OBS-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID"
+      ]
+    },
+    {
+      "id": "A-EVID-001",
+      "requirement_ids": [
+        "REQ-EVID-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "document"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID"
+      ]
+    },
+    {
+      "id": "A-EVID-002",
+      "requirement_ids": [
+        "REQ-EVID-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID"
+      ]
+    },
+    {
+      "id": "A-EVID-003",
+      "requirement_ids": [
+        "REQ-EVID-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE"
+      ]
+    },
+    {
+      "id": "A-CLOSE-001",
+      "requirement_ids": [
+        "REQ-CLOSE-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "build"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BUILD",
+        "G-EVID"
+      ]
+    },
+    {
+      "id": "A-CLOSE-002",
+      "requirement_ids": [
+        "REQ-CLOSE-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-LIVE"
+      ]
+    },
+    {
+      "id": "A-CLOSE-003",
+      "requirement_ids": [
+        "REQ-CLOSE-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-LIVE"
+      ]
+    },
+    {
+      "id": "A-CLOSE-004",
+      "requirement_ids": [
+        "REQ-CLOSE-001"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-LIVE"
+      ]
+    },
+    {
+      "id": "A-CLOSE-005",
+      "requirement_ids": [
+        "REQ-CLOSE-002"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-CLOSE-006",
+      "requirement_ids": [
+        "REQ-CLOSE-002"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-CLOSE-007",
+      "requirement_ids": [
+        "REQ-CLOSE-002"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-CLOSE-008",
+      "requirement_ids": [
+        "REQ-CLOSE-002"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-CLOSE-009",
+      "requirement_ids": [
+        "REQ-CLOSE-003"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-010",
+      "requirement_ids": [
+        "REQ-CLOSE-003"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-011",
+      "requirement_ids": [
+        "REQ-CLOSE-003"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-012",
+      "requirement_ids": [
+        "REQ-CLOSE-003"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-013",
+      "requirement_ids": [
+        "REQ-CLOSE-004"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-LIVE",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-014",
+      "requirement_ids": [
+        "REQ-CLOSE-004"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-LIVE",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-015",
+      "requirement_ids": [
+        "REQ-CLOSE-004"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-LIVE",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-016",
+      "requirement_ids": [
+        "REQ-CLOSE-004"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-017",
+      "requirement_ids": [
+        "REQ-CLOSE-005"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-CLOSE-018",
+      "requirement_ids": [
+        "REQ-CLOSE-005"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-CLOSE-019",
+      "requirement_ids": [
+        "REQ-CLOSE-005"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-020",
+      "requirement_ids": [
+        "REQ-CLOSE-005"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-021",
+      "requirement_ids": [
+        "REQ-CLOSE-006"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-CLOSE-022",
+      "requirement_ids": [
+        "REQ-CLOSE-006"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-CLOSE-023",
+      "requirement_ids": [
+        "REQ-CLOSE-006"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-CLOSE-024",
+      "requirement_ids": [
+        "REQ-CLOSE-006"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-CLOSE-025",
+      "requirement_ids": [
+        "REQ-CLOSE-007"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-026",
+      "requirement_ids": [
+        "REQ-CLOSE-007"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-027",
+      "requirement_ids": [
+        "REQ-CLOSE-007"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-028",
+      "requirement_ids": [
+        "REQ-CLOSE-007"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-029",
+      "requirement_ids": [
+        "REQ-CLOSE-008"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-CLOSE-030",
+      "requirement_ids": [
+        "REQ-CLOSE-008"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-031",
+      "requirement_ids": [
+        "REQ-CLOSE-008"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-032",
+      "requirement_ids": [
+        "REQ-CLOSE-008"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-033",
+      "requirement_ids": [
+        "REQ-CLOSE-009"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL"
+      ]
+    },
+    {
+      "id": "A-CLOSE-034",
+      "requirement_ids": [
+        "REQ-CLOSE-009"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-035",
+      "requirement_ids": [
+        "REQ-CLOSE-009"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-036",
+      "requirement_ids": [
+        "REQ-CLOSE-009"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-037",
+      "requirement_ids": [
+        "REQ-CLOSE-010"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-LIVE",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-038",
+      "requirement_ids": [
+        "REQ-CLOSE-010"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-PROTOCOL",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-039",
+      "requirement_ids": [
+        "REQ-CLOSE-010"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-LIVE",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-040",
+      "requirement_ids": [
+        "REQ-CLOSE-010"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-041",
+      "requirement_ids": [
+        "REQ-CLOSE-011"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-DEPLOY",
+        "G-EVID",
+        "G-LIVE"
+      ]
+    },
+    {
+      "id": "A-CLOSE-042",
+      "requirement_ids": [
+        "REQ-CLOSE-011"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-DEPLOY",
+        "G-EVID",
+        "G-LIVE",
+        "G-SEC"
+      ]
+    },
+    {
+      "id": "A-CLOSE-043",
+      "requirement_ids": [
+        "REQ-CLOSE-011"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-DEPLOY",
+        "G-EVID",
+        "G-LIVE"
+      ]
+    },
+    {
+      "id": "A-CLOSE-044",
+      "requirement_ids": [
+        "REQ-CLOSE-011"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-DEPLOY",
+        "G-EVID",
+        "G-LIVE"
+      ]
+    },
+    {
+      "id": "A-CLOSE-045",
+      "requirement_ids": [
+        "REQ-CLOSE-012"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "document",
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID"
+      ]
+    },
+    {
+      "id": "A-CLOSE-046",
+      "requirement_ids": [
+        "REQ-CLOSE-012"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID"
+      ]
+    },
+    {
+      "id": "A-CLOSE-047",
+      "requirement_ids": [
+        "REQ-CLOSE-012"
+      ],
+      "owner_runner": "node",
+      "required_modes": [
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-BROWSER",
+        "G-EVID",
+        "G-LIVE"
+      ]
+    },
+    {
+      "id": "A-CLOSE-048",
+      "requirement_ids": [
+        "REQ-CLOSE-012"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture",
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-LIVE"
+      ]
+    }
+  ],
+  "failure_injections": [
+    {
+      "id": "FI-01",
+      "requirement_ids": [
+        "REQ-EVID-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-FI",
+        "G-EVID"
+      ],
+      "injection_point": "legacy",
+      "expected_postcondition": "injection_observed"
+    },
+    {
+      "id": "FI-02",
+      "requirement_ids": [
+        "REQ-EVID-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-FI",
+        "G-EVID"
+      ],
+      "injection_point": "legacy",
+      "expected_postcondition": "injection_observed"
+    },
+    {
+      "id": "FI-03",
+      "requirement_ids": [
+        "REQ-EVID-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-FI",
+        "G-EVID"
+      ],
+      "injection_point": "legacy",
+      "expected_postcondition": "injection_observed"
+    },
+    {
+      "id": "FI-04",
+      "requirement_ids": [
+        "REQ-EVID-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-FI",
+        "G-EVID"
+      ],
+      "injection_point": "legacy",
+      "expected_postcondition": "injection_observed"
+    },
+    {
+      "id": "FI-05",
+      "requirement_ids": [
+        "REQ-EVID-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-FI",
+        "G-EVID"
+      ],
+      "injection_point": "legacy",
+      "expected_postcondition": "injection_observed"
+    },
+    {
+      "id": "FI-06",
+      "requirement_ids": [
+        "REQ-EVID-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-FI",
+        "G-EVID"
+      ],
+      "injection_point": "legacy",
+      "expected_postcondition": "injection_observed"
+    },
+    {
+      "id": "FI-07",
+      "requirement_ids": [
+        "REQ-EVID-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-FI",
+        "G-EVID"
+      ],
+      "injection_point": "legacy",
+      "expected_postcondition": "injection_observed"
+    },
+    {
+      "id": "FI-08",
+      "requirement_ids": [
+        "REQ-EVID-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-FI",
+        "G-EVID"
+      ],
+      "injection_point": "legacy",
+      "expected_postcondition": "injection_observed"
+    },
+    {
+      "id": "FI-09",
+      "requirement_ids": [
+        "REQ-EVID-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-FI",
+        "G-EVID"
+      ],
+      "injection_point": "legacy",
+      "expected_postcondition": "injection_observed"
+    },
+    {
+      "id": "FI-10",
+      "requirement_ids": [
+        "REQ-EVID-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-FI",
+        "G-EVID"
+      ],
+      "injection_point": "legacy",
+      "expected_postcondition": "injection_observed"
+    },
+    {
+      "id": "FI-11",
+      "requirement_ids": [
+        "REQ-EVID-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-FI",
+        "G-EVID"
+      ],
+      "injection_point": "legacy",
+      "expected_postcondition": "injection_observed"
+    },
+    {
+      "id": "FI-12",
+      "requirement_ids": [
+        "REQ-EVID-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-FI",
+        "G-EVID"
+      ],
+      "injection_point": "legacy",
+      "expected_postcondition": "injection_observed"
+    },
+    {
+      "id": "FI-13",
+      "requirement_ids": [
+        "REQ-EVID-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-FI",
+        "G-EVID"
+      ],
+      "injection_point": "legacy",
+      "expected_postcondition": "injection_observed"
+    },
+    {
+      "id": "FI-14",
+      "requirement_ids": [
+        "REQ-EVID-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-FI",
+        "G-EVID"
+      ],
+      "injection_point": "legacy",
+      "expected_postcondition": "injection_observed"
+    },
+    {
+      "id": "FI-15",
+      "requirement_ids": [
+        "REQ-EVID-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-FI",
+        "G-EVID"
+      ],
+      "injection_point": "legacy",
+      "expected_postcondition": "injection_observed"
+    },
+    {
+      "id": "FI-16",
+      "requirement_ids": [
+        "REQ-EVID-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-FI",
+        "G-EVID"
+      ],
+      "injection_point": "legacy",
+      "expected_postcondition": "injection_observed"
+    },
+    {
+      "id": "FI-CLOSE-001",
+      "requirement_ids": [
+        "REQ-CLOSE-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-FI"
+      ],
+      "injection_point": "compile/sub-build failure",
+      "expected_postcondition": "total build !=0, no releasable"
+    },
+    {
+      "id": "FI-CLOSE-002",
+      "requirement_ids": [
+        "REQ-CLOSE-001",
+        "REQ-CLOSE-001"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-FI"
+      ],
+      "injection_point": "create delay + clicks",
+      "expected_postcondition": "single key/thread"
+    },
+    {
+      "id": "FI-CLOSE-003",
+      "requirement_ids": [
+        "REQ-CLOSE-002"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-FI"
+      ],
+      "injection_point": "thread/meta/receipt writes",
+      "expected_postcondition": "all deltas 0"
+    },
+    {
+      "id": "FI-CLOSE-004",
+      "requirement_ids": [
+        "REQ-CLOSE-003"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-FI"
+      ],
+      "injection_point": "auth commit/storage fail",
+      "expected_postcondition": "atomic SID; no code replay"
+    },
+    {
+      "id": "FI-CLOSE-005",
+      "requirement_ids": [
+        "REQ-CLOSE-004",
+        "REQ-CLOSE-004",
+        "REQ-CLOSE-005"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-FI"
+      ],
+      "injection_point": "logout delayed WS",
+      "expected_postcondition": "accept=0"
+    },
+    {
+      "id": "FI-CLOSE-005",
+      "requirement_ids": [
+        "REQ-CLOSE-004",
+        "REQ-CLOSE-004",
+        "REQ-CLOSE-005"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-FI",
+        "G-LIVE"
+      ],
+      "injection_point": "logout delayed WS",
+      "expected_postcondition": "accept=0"
+    },
+    {
+      "id": "FI-CLOSE-006",
+      "requirement_ids": [
+        "REQ-CLOSE-006"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-FI"
+      ],
+      "injection_point": "slow handshake/lost ack/no pong",
+      "expected_postcondition": "bounded converge, no auto cancel"
+    },
+    {
+      "id": "FI-CLOSE-007",
+      "requirement_ids": [
+        "REQ-CLOSE-006"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-FI"
+      ],
+      "injection_point": "seq gap/old revision",
+      "expected_postcondition": "state does not rewind"
+    },
+    {
+      "id": "FI-CLOSE-008",
+      "requirement_ids": [
+        "REQ-CLOSE-006"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-FI"
+      ],
+      "injection_point": "disconnect after accepted",
+      "expected_postcondition": "turn not resent"
+    },
+    {
+      "id": "FI-CLOSE-008",
+      "requirement_ids": [
+        "REQ-CLOSE-006"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-FI",
+        "G-LIVE"
+      ],
+      "injection_point": "disconnect after accepted",
+      "expected_postcondition": "turn not resent"
+    },
+    {
+      "id": "FI-CLOSE-009",
+      "requirement_ids": [
+        "REQ-CLOSE-007"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-FI"
+      ],
+      "injection_point": "publish/SQL/receipt drop",
+      "expected_postcondition": "orphan or unique ready"
+    },
+    {
+      "id": "FI-CLOSE-010",
+      "requirement_ids": [
+        "REQ-CLOSE-008"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-FI"
+      ],
+      "injection_point": "second file / cleanup fail",
+      "expected_postcondition": "first ready kept"
+    },
+    {
+      "id": "FI-CLOSE-011",
+      "requirement_ids": [
+        "REQ-CLOSE-008"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-FI"
+      ],
+      "injection_point": "decision SQL / lost 202",
+      "expected_postcondition": "rollback or no re-approve"
+    },
+    {
+      "id": "FI-CLOSE-012",
+      "requirement_ids": [
+        "REQ-CLOSE-009",
+        "REQ-CLOSE-009",
+        "REQ-CLOSE-0010"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-FI"
+      ],
+      "injection_point": "peer bind disconnect",
+      "expected_postcondition": "recover or reject old"
+    },
+    {
+      "id": "FI-CLOSE-012",
+      "requirement_ids": [
+        "REQ-CLOSE-009",
+        "REQ-CLOSE-009",
+        "REQ-CLOSE-0010"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-FI",
+        "G-LIVE"
+      ],
+      "injection_point": "peer bind disconnect",
+      "expected_postcondition": "recover or reject old"
+    },
+    {
+      "id": "FI-CLOSE-013",
+      "requirement_ids": [
+        "REQ-CLOSE-0012"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-DEPLOY",
+        "G-EVID",
+        "G-FI"
+      ],
+      "injection_point": "busy gate / health fail",
+      "expected_postcondition": "stop=0 or restore old"
+    },
+    {
+      "id": "FI-CLOSE-013",
+      "requirement_ids": [
+        "REQ-CLOSE-0012"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-DEPLOY",
+        "G-EVID",
+        "G-FI",
+        "G-LIVE"
+      ],
+      "injection_point": "busy gate / health fail",
+      "expected_postcondition": "stop=0 or restore old"
+    },
+    {
+      "id": "FI-CLOSE-014",
+      "requirement_ids": [
+        "REQ-CLOSE-0012"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-DEPLOY",
+        "G-EVID",
+        "G-FI"
+      ],
+      "injection_point": "rollback start fail",
+      "expected_postcondition": "exit6 RECOVERY_REQUIRED"
+    },
+    {
+      "id": "FI-CLOSE-014",
+      "requirement_ids": [
+        "REQ-CLOSE-0012"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "live"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-DEPLOY",
+        "G-EVID",
+        "G-FI",
+        "G-LIVE"
+      ],
+      "injection_point": "rollback start fail",
+      "expected_postcondition": "exit6 RECOVERY_REQUIRED"
+    },
+    {
+      "id": "FI-CLOSE-015",
+      "requirement_ids": [
+        "REQ-CLOSE-0012"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-FI"
+      ],
+      "injection_point": "log IO fail",
+      "expected_postcondition": "business once, DEGRADED"
+    },
+    {
+      "id": "FI-CLOSE-016",
+      "requirement_ids": [
+        "REQ-CLOSE-0012"
+      ],
+      "owner_runner": "python",
+      "required_modes": [
+        "fixture"
+      ],
+      "parameter_cases": [
+        "default"
+      ],
+      "required": true,
+      "oracle_types": [
+        "behavior"
+      ],
+      "required_artifact_kinds": [
+        "run.json"
+      ],
+      "required_gates": [
+        "G-EVID",
+        "G-FI"
+      ],
+      "injection_point": "gate missing/tamper",
+      "expected_postcondition": "Gate FAIL exit1"
+    }
+  ],
+  "additionalProperties": false
+}

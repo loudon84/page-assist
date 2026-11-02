@@ -24,8 +24,11 @@ class BridgeService:
             if shared:
                 raise ApiError("SHARED_BRIDGE_UNSUPPORTED", "connection has shared users", status=403)
         existing = self.module.store.get_binding(host.get_instance_id(), session["subject"], connection_id)
-        peer_subject = "peer_user"
-        peer_instance = getattr(host, "peer_instance_id", "peer")
+        identity = host.authenticated_peer_identity(connection_id)
+        if identity.get("shared"):
+            raise ApiError("SHARED_BRIDGE_UNSUPPORTED", "shared connection cannot bind", status=403)
+        peer_subject = str(identity["peer_subject"])
+        peer_instance = str(identity["peer_instance_id"])
         if existing and (
             existing["peer_subject"] != peer_subject or existing["peer_instance_id"] != peer_instance
         ):

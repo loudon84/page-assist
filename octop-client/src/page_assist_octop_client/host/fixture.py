@@ -14,7 +14,8 @@ from page_assist_octop_client.constants import (
     QUESTION_UTF8_MAX,
 )
 from page_assist_octop_client.errors import ApiError
-from page_assist_octop_client.host.port import HostPort, HostUser, RuntimeState, TurnHandle
+from page_assist_octop_client.host.port import HostUser, RuntimeState, TurnHandle
+from page_assist_octop_client.storage.db import connect
 from page_assist_octop_client.jcs import canonical_json, sha256_hex
 from page_assist_octop_client.timeutil import later, rfc3339
 
@@ -30,13 +31,62 @@ def expert_key(kind: str, **fields: str) -> str:
     return "ex1_" + _b64url(canonical_json(payload).encode("utf-8"))
 
 
+class FixtureUoW:
+    def __init__(self, host: "FixtureHostPort") -> None:
+        self.host = host
+        self.connection = host._conn
+
+    def __enter__(self) -> "FixtureUoW":
+        if self.host._uow_depth == 0:
+            self.connection.execute("BEGIN IMMEDIATE")
+        self.host._uow_depth += 1
+        self.host._uow_conn = self.connection
+        return self
+
+    def __exit__(self, exc_type: Any, exc: Any, tb: Any) -> bool:
+        self.host._uow_depth -= 1
+        if self.host._uow_depth > 0:
+            return False
+        self.host._uow_conn = None
+        if exc_type is not None:
+            self.host._uow_pending_threads.clear()
+            try:
+                self.connection.execute("ROLLBACK")
+            except Exception:
+                pass
+            return False
+        store = getattr(self.host, "module", None)
+        store_injections = getattr(getattr(store, "store", None), "injections", {})
+        if self.host.injections.get("fail_before_commit") or store_injections.get("fail_before_commit"):
+            if store is not None and getattr(store, "store", None) is not None:
+                store.store.mark_observed("fail_before_commit")
+            self.host.injection_observed["fail_before_commit"] = True
+            self.host._uow_pending_threads.clear()
+            self.connection.execute("ROLLBACK")
+            raise RuntimeError("injected failure before commit")
+        self.connection.execute("COMMIT")
+        for thread in self.host._uow_pending_threads:
+            self.host.threads[thread["thread_id"]] = thread
+            self.host.messages.setdefault(thread["thread_id"], [])
+            self.host.runtimes.setdefault(thread["thread_id"], RuntimeState())
+        self.host._uow_pending_threads.clear()
+        return False
+
+
 class FixtureHostPort:
     """In-process HostPort used by fixture acceptance. Not a product Octop host."""
+
+    is_fixture = True
 
     def __init__(self, root: Path, instance_id: str = "00000000-0000-4000-8000-000000000001") -> None:
         self.root = Path(root)
         self.root.mkdir(parents=True, exist_ok=True)
         self.instance_id = instance_id
+        self._conn = connect(self.get_db_path())
+        self._uow_depth = 0
+        self._uow_conn = None
+        self._uow_pending_threads: list[dict[str, Any]] = []
+        self.injections: dict[str, Any] = {}
         self.host_build_id = "fixture-host-1"
         self._ready = True
         self._setup_complete = True
@@ -78,6 +128,14 @@ class FixtureHostPort:
         self.hold_turn_until_history = False
         self.held_turns: set[str] = set()
         self.injection_observed: dict[str, bool] = {}
+        self.authenticated_peers: dict[str, dict[str, Any]] = {
+            "conn-personal-1": {
+                "peer_instance_id": self.peer_instance_id,
+                "peer_subject": "peer_user",
+                "peer_identity_key": f"{self.peer_instance_id}:peer_user",
+                "shared": False,
+            }
+        }
 
     def _seed_experts(self) -> None:
         local_key = expert_key("local", instance_id=self.instance_id, agent_id=self.local_agent_id)
@@ -167,6 +225,47 @@ class FixtureHostPort:
     def get_db_path(self) -> Path:
         return self.root / "octop-business.sqlite"
 
+    def shared_connection(self) -> Any:
+        return self._conn
+
+    def uow(self) -> FixtureUoW:
+        return FixtureUoW(self)
+
+    def complete_hosted_auth(self, transaction_id: str, client_id: str, state: str, user: HostUser) -> dict[str, Any]:
+        from page_assist_octop_client.auth.tokens import hash_secret, new_token
+        from page_assist_octop_client.constants import AUTH_CODE_TTL_SECONDS
+        from page_assist_octop_client.timeutil import later, rfc3339
+
+        if not user.enabled:
+            raise ApiError("AUTH_CODE_INVALID", "principal disabled", status=400)
+        module = getattr(self, "module", None)
+        if module is None:
+            raise ApiError("CLIENT_MODULE_UNAVAILABLE", "module not bound", status=503)
+        tx = module.store.get_transaction(transaction_id)
+        if tx is None or tx["client_id"] != client_id or tx["state"] != state:
+            raise ApiError("AUTH_STATE_MISMATCH", "authorization transaction mismatch", status=400)
+        code = new_token(prefix="ac1_", nbytes=32)
+        module.store.insert_code(
+            {
+                "code_hash": hash_secret(code),
+                "transaction_id": transaction_id,
+                "client_id": tx["client_id"],
+                "redirect_uri": tx["redirect_uri"],
+                "subject": user.id,
+                "display_name": user.display_name,
+                "created_at": rfc3339(),
+                "expires_at": later(AUTH_CODE_TTL_SECONDS),
+            }
+        )
+        sep = "&" if "?" in tx["redirect_uri"] else "?"
+        return {"redirect_url": f"{tx['redirect_uri']}{sep}code={code}&state={tx['state']}", "code": code}
+
+    def authenticated_peer_identity(self, connection_id: str) -> dict[str, Any]:
+        identity = self.authenticated_peers.get(connection_id)
+        if identity is None:
+            raise ApiError("PERSONAL_BINDING_REQUIRED", "peer is not authenticated", status=403)
+        return identity
+
     def lookup_user(self, subject: str) -> HostUser | None:
         return self.users.get(subject)
 
@@ -222,6 +321,10 @@ class FixtureHostPort:
             "owner": subject,
             "source_kind": self.experts[expert_key_value]["source"]["kind"],
         }
+        if self._uow_conn is not None:
+            self._uow_pending_threads.append(thread)
+            runtime = RuntimeState()
+            return {**thread, "runtime": runtime.to_dict()}
         self.threads[thread_id] = thread
         self.messages[thread_id] = []
         self.runtimes[thread_id] = RuntimeState()
@@ -329,6 +432,10 @@ class FixtureHostPort:
                 raise ApiError("INPUT_TOO_LARGE", "context too large", status=413)
             if len(upload_ids) > FILES_PER_TURN_MAX:
                 raise ApiError("UPLOAD_TOO_LARGE", "too many files", status=413)
+            for upload_id in upload_ids:
+                rec = self.uploads.get(upload_id)
+                if rec is None or rec["owner"] != subject or rec["thread_id"] != thread_id or rec["expertKey"] != expert_key_value or rec["state"] != "ready":
+                    raise ApiError("UPLOAD_REF_FORBIDDEN", "upload is not eligible", status=403)
             turn_id = str(uuid4())
             self._busy.add(thread_id)
             runtime = self.runtimes[thread_id]
@@ -504,10 +611,16 @@ class FixtureHostPort:
         return rec
 
     def attach_uploads(self, thread_id: str, upload_ids: list[str]) -> None:
-        for upload_id in upload_ids:
-            rec = self.uploads.get(upload_id)
-            if rec and rec["thread_id"] == thread_id:
+        snapshot = {uid: dict(rec) for uid, rec in self.uploads.items()}
+        try:
+            for upload_id in upload_ids:
+                rec = self.uploads.get(upload_id)
+                if rec is None or rec["thread_id"] != thread_id or rec["state"] != "ready":
+                    raise ApiError("UPLOAD_REF_FORBIDDEN", "upload is not eligible", status=403)
                 rec["state"] = "attached"
+        except ApiError:
+            self.uploads = snapshot
+            raise
 
     def submit_approval(
         self,
@@ -534,6 +647,14 @@ class FixtureHostPort:
             return {"decision_id": decision_id, "status": "accepted"}
         if pending["consumed"]:
             raise ApiError("APPROVAL_STALE", "pending consumed", status=409)
+        if not decisions:
+            raise ApiError("CONFIG_INVALID", "decisions required", status=400)
+        allowed_ids = {item["item_id"] for item in pending.get("items", [])}
+        for item in decisions:
+            if item.get("item_id") not in allowed_ids:
+                raise ApiError("CONFIG_INVALID", "unknown decision item", status=400)
+            if item.get("type") not in ("approve", "reject"):
+                raise ApiError("CONFIG_INVALID", "illegal decision type", status=400)
         pending["consumed"] = True
         self.decisions[decision_id] = {"hash": payload_hash, "count": 1}
         runtime = self.runtimes[thread_id]
@@ -607,6 +728,12 @@ class FixtureHostPort:
 
     def dashboard_binding_digest(self, expert_key_value: str) -> str:
         return self.dashboard_bindings[expert_key_value]
+
+    async def subscribe(self, subject: str, expert_key: str, thread_id: str) -> dict[str, Any]:
+        thread = self.get_thread(thread_id)
+        if thread is None or thread["owner"] != subject or thread["expertKey"] != expert_key:
+            raise ApiError("THREAD_NOT_FOUND", "thread not found", status=404)
+        return self.get_runtime(thread_id).to_dict()
 
 
 def _ts(value: str) -> float:

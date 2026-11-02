@@ -29,6 +29,8 @@ class OctopClientModule:
         self.cursor_key = ensure_cursor_key(config.state_root)
         self.connections: dict[str, Any] = {}
         self.sid_connections: dict[str, set[str]] = {}
+        self.revoked_sids: set[str] = set()
+        self.closing_sends: list[Any] = []
         self.register_count = 1
 
     @property
@@ -59,7 +61,11 @@ class OctopClientModule:
             return
         self.state = "REGISTERED"
         db_path = self.host.get_db_path()
-        self.store = Store(db_path)
+        self.host.module = self
+        if not self.config.fixture_mode and getattr(self.host, "is_fixture", False):
+            self.state = "FAILED"
+            raise ApiError("CONFIG_INVALID", "FixtureHostPort is forbidden in production", status=400)
+        self.store = Store(db_path, host=self.host)
         self.store.migrate()
         uploads = self.config.state_root / "extensions" / "octop-client" / "uploads"
         uploads.mkdir(parents=True, exist_ok=True)
@@ -92,8 +98,11 @@ class OctopClientModule:
                 self.sid_connections.pop(sid, None)
 
     def close_connections(self, sid: str) -> None:
+        self.revoked_sids.add(sid)
         for connection_id in list(self.sid_connections.get(sid, set())):
-            self.connections.pop(connection_id, None)
+            send = self.connections.pop(connection_id, None)
+            if send is not None:
+                self.closing_sends.append(send)
         self.sid_connections.pop(sid, None)
 
     def ws_origin(self) -> str:

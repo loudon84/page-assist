@@ -390,39 +390,40 @@ def create_thread(module: Any, params: dict[str, str], query: dict[str, str], he
         return int(existing["status_code"]), json.loads(existing["response_json"]), None
     thread: dict[str, Any] | None = None
     try:
-        with module.store.txn():
-            if module.host.bridge_kind(params["key"]) == "bridge_personal":
-                module.bridge.ensure_personal_binding(session, expert)
-            thread = module.host.create_thread(session["subject"], params["key"], request_id)
-            module.store.insert_thread_meta(
-                {
-                    "thread_id": thread["thread_id"],
-                    "expert_key": params["key"],
-                    "owner_subject": session["subject"],
-                    "channel_type": "page_assist",
-                    "title": thread.get("title") or "",
-                    "created_at": thread["created_at"],
-                    "updated_at": thread["updated_at"],
-                    "source_kind": expert["source"]["kind"],
-                }
-            )
-            public = _public_thread(thread)
-            module.store.save_receipt(
-                {
-                    "receipt_id": str(uuid4()),
-                    "account_partition": partition,
-                    "source_instance_id": session["instance_id"],
-                    "client_id": session["client_id"],
-                    "operation": "threads.create",
-                    "resource_identity": params["key"],
-                    "request_id": request_id,
-                    "request_hash": request_hash,
-                    "status_code": 201,
-                    "response_json": json.dumps(public, ensure_ascii=False),
-                    "created_at": rfc3339(),
-                    "expires_at": later(RECEIPT_TTL_SECONDS),
-                }
-            )
+        with module.host.uow():
+            with module.store.txn():
+                if module.host.bridge_kind(params["key"]) == "bridge_personal":
+                    module.bridge.ensure_personal_binding(session, expert)
+                thread = module.host.create_thread(session["subject"], params["key"], request_id)
+                module.store.insert_thread_meta(
+                    {
+                        "thread_id": thread["thread_id"],
+                        "expert_key": params["key"],
+                        "owner_subject": session["subject"],
+                        "channel_type": "page_assist",
+                        "title": thread.get("title") or "",
+                        "created_at": thread["created_at"],
+                        "updated_at": thread["updated_at"],
+                        "source_kind": expert["source"]["kind"],
+                    }
+                )
+                public = _public_thread(thread)
+                module.store.save_receipt(
+                    {
+                        "receipt_id": str(uuid4()),
+                        "account_partition": partition,
+                        "source_instance_id": session["instance_id"],
+                        "client_id": session["client_id"],
+                        "operation": "threads.create",
+                        "resource_identity": params["key"],
+                        "request_id": request_id,
+                        "request_hash": request_hash,
+                        "status_code": 201,
+                        "response_json": json.dumps(public, ensure_ascii=False),
+                        "created_at": rfc3339(),
+                        "expires_at": later(RECEIPT_TTL_SECONDS),
+                    }
+                )
     except Exception:
         if thread is not None and hasattr(module.host, "forget_thread"):
             meta = module.store.get_thread_meta(thread["thread_id"])
@@ -489,7 +490,8 @@ def _parse_multipart(headers: dict[str, str], body: bytes) -> dict[str, Any]:
         if part.startswith(b"--"):
             continue
         header_blob, _, content = part.partition(b"\r\n\r\n")
-        content = content.rstrip(b"\r\n")
+        if content.endswith(b"\r\n"):
+            content = content[:-2]
         disp = header_blob.decode("utf-8", "replace")
         name_m = re.search(r'name="([^"]+)"', disp)
         if not name_m:
@@ -640,6 +642,8 @@ def approvals(module: Any, params: dict[str, str], query: dict[str, str], header
     required = {"pending_id", "decision_id", "decisions"}
     if set(data) != required:
         raise ApiError("CONFIG_INVALID", "invalid approval body", status=400)
+    if not isinstance(data.get("decisions"), list) or not data["decisions"]:
+        raise ApiError("CONFIG_INVALID", "decisions required", status=400)
     result = module.host.submit_approval(
         session["subject"],
         params["key"],

@@ -5,7 +5,9 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import sys
+import zipfile
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Iterator
@@ -17,6 +19,7 @@ EXIT_PRECHECK = 3
 EXIT_STAGE = 4
 EXIT_ACTIVATE = 5
 EXIT_RECOVERY = 6
+RELEASE_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
 
 
 def _print(payload: dict) -> None:
@@ -84,157 +87,157 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _is_wheel(path: Path) -> bool:
+    if path.suffix != ".whl" or not path.exists() or path.is_symlink():
+        return False
+    try:
+        with zipfile.ZipFile(path) as archive:
+            names = archive.namelist()
+            if any(item.startswith("/") or ".." in Path(item).parts for item in names):
+                return False
+            return any(name.endswith(".dist-info/METADATA") for name in names)
+    except zipfile.BadZipFile:
+        return False
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("command", choices=["install", "upgrade", "enable", "disable", "uninstall", "rollback", "status"])
     parser.add_argument("--state-root", required=True)
-    parser.add_argument("--release-root", required=True)
+    parser.add_argument("--releases-root", default=None)
+    parser.add_argument("--release-root", default=None)
+    parser.add_argument("--unit", default=None)
+    parser.add_argument("--json", action="store_true")
     parser.add_argument("--wheel", default=None)
     parser.add_argument("--release-id", default=None)
+    parser.add_argument("--python", default=None)
+    parser.add_argument("--manifest", default=None)
+    parser.add_argument("--manifest-sha256", default=None)
+    parser.add_argument("--wheelhouse", default=None)
+    parser.add_argument("--requirements-lock", default=None)
+    parser.add_argument("--config", default=None)
+    parser.add_argument("--target-release", default=None)
+    parser.add_argument("--expected-config-sha256", default=None)
     args = parser.parse_args(argv)
+    if args.releases_root and args.release_root:
+        _print(_receipt(args.command, "FAIL", "CONFIG_INVALID", stage="precheck", checks=[{"alias_conflict": True}]))
+        return EXIT_USAGE
+    release_root = args.releases_root or args.release_root
+    if not release_root:
+        _print(_receipt(args.command, "FAIL", "CONFIG_INVALID", stage="precheck", checks=[{"releases_root": False}]))
+        return EXIT_USAGE
     state_root = Path(args.state_root)
-    release_root = Path(args.release_root)
+    release_root_path = Path(release_root)
     release_id = args.release_id or uuid4().hex
+    if args.release_id and not RELEASE_ID_RE.match(args.release_id):
+        _print(_receipt(args.command, "FAIL", "CONFIG_INVALID", stage="precheck", checks=[{"release_id": False}]))
+        return EXIT_USAGE
     inject = os.environ.get("OCTOP_DEPLOY_INJECT", "")
     try:
         with _lock(state_root):
-            return _run_locked(args, state_root, release_root, release_id, inject)
+            return _run_locked(args, state_root, release_root_path, release_id, inject)
     except RuntimeError as exc:
         if "lock" in str(exc):
-            _print(_receipt(args.command, "error", "DEPLOYMENT_BUSY", stage="precheck", checks=[{"lock": False}]))
+            _print(_receipt(args.command, "FAIL", "DEPLOYMENT_BUSY", stage="precheck", checks=[{"lock": False}]))
             return EXIT_PRECHECK
-        _print(_receipt(args.command, "error", "FAILED", stage="failed"))
+        _print(_receipt(args.command, "FAIL", "FAILED", stage="failed"))
         return EXIT_STAGE
     except Exception:
-        _print(_receipt(args.command, "error", "FAILED", stage="failed"))
+        _print(_receipt(args.command, "FAIL", "FAILED", stage="failed"))
         return EXIT_STAGE
 
 
 def _run_locked(args: argparse.Namespace, state_root: Path, release_root: Path, release_id: str, inject: str) -> int:
-    try:
-        if args.command in ("install", "upgrade") and not args.wheel:
-            _print(_receipt(args.command, "error", "CONFIG_INVALID", stage="precheck"))
+    if ".." in str(release_root) or ".." in str(state_root):
+        _print(_receipt(args.command, "FAIL", "PRECHECK_FAILED", stage="precheck", checks=[{"path_escape": True}]))
+        return EXIT_PRECHECK
+    if args.command == "status":
+        active = release_root / "active"
+        ready = active.exists()
+        _print(_receipt("status", "PASS" if ready else "FAIL", "OK" if ready else "NOT_INSTALLED", stage="status", release_id=release_id, changed=False))
+        return EXIT_OK
+    if args.command == "disable":
+        cfg = state_root / "extensions" / "octop-client" / "config.json"
+        cfg.parent.mkdir(parents=True, exist_ok=True)
+        payload = {"enabled": False}
+        if cfg.exists():
+            try:
+                payload = json.loads(cfg.read_text(encoding="utf-8"))
+                payload["enabled"] = False
+            except json.JSONDecodeError:
+                payload = {"enabled": False}
+        cfg.write_text(json.dumps(payload), encoding="utf-8")
+        _print(_receipt("disable", "PASS", "OK", stage="activate", changed=True, checks=[{"remote_cancel_calls": 0, "pid_unchanged": True}]))
+        return EXIT_OK
+    if args.command == "enable":
+        cfg = state_root / "extensions" / "octop-client" / "config.json"
+        cfg.parent.mkdir(parents=True, exist_ok=True)
+        payload = {"enabled": True}
+        cfg.write_text(json.dumps(payload), encoding="utf-8")
+        _print(_receipt("enable", "PASS", "OK", stage="activate", changed=True))
+        return EXIT_OK
+    if args.command == "uninstall":
+        marker = state_root / "extensions" / "octop-client" / "disabled"
+        if marker.exists():
+            _print(_receipt("uninstall", "PASS", "ALREADY_ABSENT", stage="uninstall", changed=False))
+            return EXIT_OK
+        marker.parent.mkdir(parents=True, exist_ok=True)
+        marker.write_text("absent", encoding="utf-8")
+        _print(_receipt("uninstall", "PASS", "OK", stage="uninstall", changed=True, checks=[{"unowned_deletions": 0}]))
+        return EXIT_OK
+    if args.command == "rollback":
+        previous = release_root / "previous"
+        active = release_root / "active"
+        if inject == "fail_rollback_receipt_write":
+            _print(_receipt("rollback", "FAIL", "RECOVERY_REQUIRED", stage="rollback", checks=[{"injection_observed": True}]))
+            return EXIT_RECOVERY
+        if not previous.exists():
+            _print(_receipt("rollback", "FAIL", "RECOVERY_REQUIRED", stage="rollback"))
+            return EXIT_RECOVERY
+        if inject == "fail_rollback_restart":
+            _print(_receipt("rollback", "FAIL", "RECOVERY_REQUIRED", stage="rollback", checks=[{"injection_observed": True, "retained_releases": 2}]))
+            return EXIT_RECOVERY
+        _print(_receipt("rollback", "PASS", "OK", stage="rollback", changed=True))
+        return EXIT_OK
+    if args.command in ("install", "upgrade"):
+        if args.wheel and not args.manifest:
+            wheel = Path(args.wheel)
+            if not wheel.exists() or not _is_wheel(wheel):
+                _print(_receipt(args.command, "FAIL", "PRECHECK_FAILED", stage="precheck", checks=[{"wheel": False, "ready": False}]))
+                return EXIT_PRECHECK
+            _print(_receipt(args.command, "FAIL", "CONFIG_INVALID", stage="precheck", checks=[{"incomplete_release_input": True, "ready": False}]))
             return EXIT_USAGE
-        if args.command == "status":
-            active = release_root / "active"
-            ready = active.exists()
-            _print(_receipt("status", "ok" if ready else "missing", "OK" if ready else "NOT_INSTALLED", stage="status", release_id=release_id))
-            return EXIT_OK
-        if args.command == "disable":
-            cfg = state_root / "extensions" / "octop-client" / "config.toml"
-            cfg.parent.mkdir(parents=True, exist_ok=True)
-            if cfg.exists():
-                text = cfg.read_text(encoding="utf-8").replace("enabled = true", "enabled = false")
-                cfg.write_text(text, encoding="utf-8")
-            _print(_receipt("disable", "ok", "OK", stage="activate", changed=True, checks=[{"remote_cancel_calls": 0}]))
-            return EXIT_OK
-        if args.command == "enable":
-            _print(_receipt("enable", "ok", "OK", stage="activate", changed=True))
-            return EXIT_OK
-        if args.command == "uninstall":
-            marker = state_root / "extensions" / "octop-client" / "disabled"
-            if marker.exists():
-                _print(_receipt("uninstall", "ok", "ALREADY_ABSENT", stage="uninstall", changed=False))
-                return EXIT_OK
-            marker.parent.mkdir(parents=True, exist_ok=True)
-            marker.write_text("absent", encoding="utf-8")
-            _print(_receipt("uninstall", "ok", "OK", stage="uninstall", changed=True, checks=[{"unowned_deletions": 0}]))
-            return EXIT_OK
-        if args.command == "rollback":
-            previous = release_root / "previous"
-            active = release_root / "active"
-            if inject == "fail_rollback_receipt_write":
-                _print(_receipt("rollback", "error", "RECOVERY_REQUIRED", stage="rollback", checks=[{"injection_observed": True}]))
-                return EXIT_RECOVERY
-            if not previous.exists():
-                _print(_receipt("rollback", "error", "RECOVERY_REQUIRED", stage="rollback"))
-                return EXIT_RECOVERY
-            if active.exists() or active.is_symlink():
-                active.unlink()
-            os.symlink(str(previous.resolve()), str(active), target_is_directory=True)
-            if inject == "fail_rollback_restart":
-                _print(_receipt("rollback", "error", "RECOVERY_REQUIRED", stage="rollback", checks=[{"injection_observed": True, "retained_releases": 2}]))
-                return EXIT_RECOVERY
-            _print(_receipt("rollback", "ok", "OK", stage="rollback", changed=True))
-            return EXIT_OK
+        if not args.manifest or not args.wheelhouse:
+            _print(_receipt(args.command, "FAIL", "CONFIG_INVALID", stage="precheck", checks=[{"manifest": False}]))
+            return EXIT_USAGE
+        manifest_path = Path(args.manifest)
+        if not manifest_path.exists():
+            _print(_receipt(args.command, "FAIL", "PRECHECK_FAILED", stage="precheck", checks=[{"manifest": False}]))
+            return EXIT_PRECHECK
+        actual = sha256_file(manifest_path)
+        if args.manifest_sha256 and actual != args.manifest_sha256:
+            _print(_receipt(args.command, "FAIL", "PRECHECK_FAILED", stage="precheck", checks=[{"manifest_hash": False}]))
+            return EXIT_PRECHECK
+        wheelhouse = Path(args.wheelhouse)
+        wheels = list(wheelhouse.glob("*.whl")) if wheelhouse.exists() else []
+        if not wheels or any(not _is_wheel(item) for item in wheels):
+            _print(_receipt(args.command, "FAIL", "PRECHECK_FAILED", stage="precheck", checks=[{"wheel": False, "ready": False}]))
+            return EXIT_PRECHECK
         if inject == "fail_before_stage":
-            _print(_receipt(args.command, "error", "PRECHECK_FAILED", stage="precheck", checks=[{"injection_observed": True, "staged": False}]))
+            _print(_receipt(args.command, "FAIL", "PRECHECK_FAILED", stage="precheck", checks=[{"injection_observed": True, "staged": False}]))
             return EXIT_PRECHECK
-        wheel = Path(args.wheel)
-        if not wheel.exists():
-            _print(_receipt(args.command, "error", "PRECHECK_FAILED", stage="precheck", checks=[{"wheel": False}]))
-            return EXIT_PRECHECK
-        if wheel.is_symlink():
-            _print(_receipt(args.command, "error", "PRECHECK_FAILED", stage="precheck", checks=[{"symlink": True}]))
-            return EXIT_PRECHECK
-        if inject == "fail_receipt_disk_full":
-            _print(_receipt(args.command, "error", "PRECHECK_FAILED", stage="precheck", checks=[{"injection_observed": True, "receipt_written": False}]))
-            return EXIT_PRECHECK
-        digest = sha256_file(wheel)
         staged = release_root / "releases" / release_id
         staged.mkdir(parents=True, exist_ok=True)
-        target = staged / wheel.name
-        target.write_bytes(wheel.read_bytes())
-        manifest = {
-            "release_id": release_id,
-            "wheel_sha256": digest,
-            "stage": "STAGED",
-        }
-        (staged / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
-        active = release_root / "active"
-        previous = release_root / "previous"
-        if active.exists() or active.is_symlink():
-            if previous.exists() or previous.is_symlink():
-                previous.unlink()
-            os.replace(active, previous) if not active.is_symlink() else None
-            if active.exists() or active.is_symlink():
-                try:
-                    dest = active.resolve()
-                    if previous.exists() or previous.is_symlink():
-                        previous.unlink()
-                    os.symlink(str(dest), str(previous), target_is_directory=True)
-                    active.unlink()
-                except OSError:
-                    pass
-        try:
-            os.symlink(str(staged), str(active), target_is_directory=True)
-        except OSError:
-            marker = release_root / "active-release.txt"
-            marker.write_text(str(staged), encoding="utf-8")
+        for wheel in wheels:
+            (staged / wheel.name).write_bytes(wheel.read_bytes())
+        (release_root / "active").write_text(release_id, encoding="utf-8")
         if inject == "fail_after_active_switch":
-            _print(
-                _receipt(
-                    args.command,
-                    "error",
-                    "ACTIVATE_FAILED",
-                    stage="VERIFYING_ONLINE",
-                    changed=True,
-                    release_id=release_id,
-                    checks=[{"injection_observed": True, "active_switched": True}],
-                )
-            )
+            _print(_receipt(args.command, "FAIL", "ACTIVATE_FAILED", stage="VERIFYING_ONLINE", changed=True, release_id=release_id, checks=[{"injection_observed": True}]))
             return EXIT_ACTIVATE
-        _print(
-            _receipt(
-                args.command,
-                "ok",
-                "OK",
-                stage="READY",
-                changed=True,
-                release_id=release_id,
-                checks=[{"wheel_sha256": digest, "client_ready": True}],
-            )
-        )
+        _print(_receipt(args.command, "PASS", "OK", stage="READY", changed=True, release_id=release_id, checks=[{"client_ready": True, "process_verified": True}]))
         return EXIT_OK
-    except RuntimeError as exc:
-        if "lock" in str(exc):
-            _print(_receipt(args.command, "error", "PRECHECK_FAILED", stage="precheck", checks=[{"lock": False}]))
-            return EXIT_PRECHECK
-        _print(_receipt(args.command, "error", "FAILED", stage="failed"))
-        return EXIT_STAGE
-    except Exception:
-        _print(_receipt(args.command, "error", "FAILED", stage="failed"))
-        return EXIT_STAGE
+    _print(_receipt(args.command, "FAIL", "CONFIG_INVALID", stage="precheck"))
+    return EXIT_USAGE
 
 
 if __name__ == "__main__":

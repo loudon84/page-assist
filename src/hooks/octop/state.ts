@@ -2,16 +2,16 @@ import type { ConversationUiState } from "@/services/octop-api/types"
 
 export const isBusyState = (state: ConversationUiState): boolean => {
   switch (state) {
+    case "CREATING":
     case "UPLOADING":
     case "SUBMITTING":
     case "RUNNING":
+    case "AWAITING_APPROVAL":
     case "CANCELLING":
     case "RECONCILING":
       return true
     case "EMPTY":
-    case "CREATING":
     case "IDLE":
-    case "AWAITING_APPROVAL":
     case "UNKNOWN":
       return false
     default: {

@@ -5,6 +5,7 @@ import os
 import subprocess
 import sys
 import tempfile
+import zipfile
 from pathlib import Path
 from typing import Any
 from uuid import uuid4
@@ -203,11 +204,16 @@ async def fi_10(_h: Harness) -> list[dict[str, Any]]:
         rel = Path(tmp) / "release"
         state.mkdir()
         rel.mkdir()
-        wheel = Path(tmp) / "pkg.whl"
-        wheel.write_bytes(b"wheel-bytes")
+        wheelhouse = Path(tmp) / "wheelhouse"
+        wheelhouse.mkdir()
+        wheel = wheelhouse / "pkg.whl"
+        with zipfile.ZipFile(wheel, "w") as archive:
+            archive.writestr("pkg-1.0.dist-info/METADATA", "Name: pkg\nVersion: 1.0\n")
+        manifest = Path(tmp) / "manifest.json"
+        manifest.write_text("{}", encoding="utf-8")
         env = {**os.environ, "OCTOP_DEPLOY_INJECT": "fail_after_active_switch"}
         proc = subprocess.run(
-            [sys.executable, str(DEPLOY), "install", "--state-root", str(state), "--release-root", str(rel), "--wheel", str(wheel), "--release-id", "rel1"],
+            [sys.executable, str(DEPLOY), "install", "--state-root", str(state), "--release-root", str(rel), "--manifest", str(manifest), "--wheelhouse", str(wheelhouse), "--release-id", "rel1"],
             capture_output=True,
             text=True,
             env=env,

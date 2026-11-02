@@ -22,7 +22,8 @@ const CORE_FEATURES = [
   "history_v1",
   "chat_ws_v1",
   "uploads_v1",
-  "revocable_sessions"
+  "revocable_sessions",
+  "runtime_revision_v1"
 ] as const
 
 const emptyConfig = (): EnterpriseConfig => ({
@@ -54,7 +55,7 @@ export const loadEnterpriseConfig = async (): Promise<ResolvedConfig> => {
   const managed = await readManaged<Partial<EnterpriseConfig>>("octopEnterprise")
   const user = (await readLocal<EnterpriseConfig>(USER_KEY)) || emptyConfig()
   const epoch = (await readLocal<number>(EPOCH_KEY)) || 0
-  if (managed && (managed.enabled || managed.base_url || managed.client_id)) {
+  if (managed && ("enabled" in managed || "base_url" in managed || "client_id" in managed)) {
     return {
       enabled: Boolean(managed.enabled),
       base_url: String(managed.base_url || ""),
@@ -137,6 +138,9 @@ export const assertSecureEndpoint = (
 export const assertCompatible = (caps: ClientCapabilities): void => {
   if (caps.protocol.major !== 1) {
     throw new OctopApiError("PROTOCOL_INCOMPATIBLE", "protocol major must be 1")
+  }
+  if ((caps.protocol.minor ?? 0) < 1) {
+    throw new OctopApiError("PROTOCOL_INCOMPATIBLE", "protocol minor must be >= 1")
   }
   for (const key of CORE_FEATURES) {
     if (!caps.features[key]) {

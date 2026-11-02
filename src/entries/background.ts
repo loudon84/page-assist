@@ -6,9 +6,13 @@ import { getInitialConfig } from "@/services/action"
 import { getCustomCopilotPrompts, getCopilotPromptsEnabledState, type CustomCopilotPrompt } from "@/services/application"
 import { startMcpOAuthFlow, disconnectMcpOAuth } from "@/libs/mcp/oauth-flow"
 import { McpServerDb } from "@/db/dexie/mcp"
+import { installIdentityCoordinator } from "@/services/octop-api/identity-coordinator"
 
 export default defineBackground({
   main() {
+    if (import.meta.env.BROWSER !== "firefox") {
+      installIdentityCoordinator()
+    }
     const storage = new Storage({
       area: "local"
     })

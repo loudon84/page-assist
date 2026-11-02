@@ -163,8 +163,13 @@ export const openConversation = (wsUrl: string): ConversationConnection => {
   }
   connect()
 
-  const send = (type: string, threadId: string | null, payload: Record<string, unknown>) => {
-    const request_id = crypto.randomUUID()
+  const send = (
+    type: string,
+    threadId: string | null,
+    payload: Record<string, unknown>,
+    requestId?: string
+  ) => {
+    const request_id = requestId || crypto.randomUUID()
     const frame = {
       v: 1,
       type,
@@ -181,11 +186,34 @@ export const openConversation = (wsUrl: string): ConversationConnection => {
 
   const wait = (requestId: string) =>
     new Promise((resolve, reject) => {
-      pending.set(requestId, { resolve, reject })
+      const timer = setTimeout(() => {
+        pending.delete(requestId)
+        reject(new OctopApiError("TIMEOUT", "ack deadline exceeded"))
+      }, 10_000)
+      pending.set(requestId, {
+        resolve: (value) => {
+          clearTimeout(timer)
+          resolve(value)
+        },
+        reject: (error) => {
+          clearTimeout(timer)
+          reject(error)
+        }
+      })
     })
 
   const connection: ConversationConnection = {
+    async waitOpen() {
+      const started = Date.now()
+      while (!socket || socket.readyState !== WebSocket.OPEN) {
+        if (closed || Date.now() - started > 10_000) {
+          throw new OctopApiError("NETWORK_UNAVAILABLE", "websocket not open")
+        }
+        await new Promise((resolve) => setTimeout(resolve, 50))
+      }
+    },
     async subscribe(threadId) {
+      await connection.waitOpen()
       const id = send("subscribe", threadId, {})
       await wait(id)
     },
@@ -198,11 +226,16 @@ export const openConversation = (wsUrl: string): ConversationConnection => {
             text: input.context.text
           }
         : null
-      const id = send("user_turn", input.threadId, {
-        question: input.question,
-        context: contextPayload,
-        upload_ids: input.uploadIds
-      })
+      const id = send(
+        "user_turn",
+        input.threadId,
+        {
+          question: input.question,
+          context: contextPayload,
+          upload_ids: input.uploadIds
+        },
+        input.clientRequestId
+      )
       const receipt = (await wait(id)) as SubmissionReceipt
       return receipt
     },

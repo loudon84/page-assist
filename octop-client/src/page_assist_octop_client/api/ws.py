@@ -108,6 +108,11 @@ def _consume_ticket(module: Any, ticket: str, expert_key: str, origin: str) -> d
 
 
 async def _handle_command(module: Any, session: dict[str, Any], expert_key: str, cmd: dict[str, Any], emit: Any, send: Any) -> None:
+    fresh = module.store.get_session(session["sid"])
+    if fresh is None or fresh["revoked_at"] is not None or session["sid"] in module.revoked_sids:
+        raise ApiError("SESSION_REVOKED", "session revoked", status=401, ws_close=WS_CLOSE_REVOKED)
+    if not module.host.check_acl(session["subject"], expert_key, "chat"):
+        raise ApiError("FORBIDDEN", "acl revoked", status=403, ws_close=WS_CLOSE_REVOKED)
     if cmd.get("v") != 1:
         raise ApiError("PROTOCOL_INCOMPATIBLE", "command v must be 1", status=426)
     ctype = cmd.get("type")

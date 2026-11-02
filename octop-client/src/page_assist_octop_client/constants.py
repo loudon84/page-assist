@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 PROTOCOL_MAJOR = 1
-PROTOCOL_MINOR = 0
+PROTOCOL_MINOR = 1
 API_PREFIX = "/api/client/v1"
 TOKEN_PREFIX = "octopc1_"
 EXPERT_KEY_PREFIX = "ex1_"
@@ -38,6 +38,7 @@ CORE_FEATURES = (
     "chat_ws_v1",
     "uploads_v1",
     "revocable_sessions",
+    "runtime_revision_v1",
 )
 ALLOWED_MEDIA = {
     "image/png": "png",

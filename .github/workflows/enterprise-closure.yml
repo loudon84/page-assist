@@ -1,0 +1,54 @@
+name: enterprise-closure
+
+on:
+  pull_request:
+    paths:
+      - "src/services/octop-api/**"
+      - "src/components/Octop/**"
+      - "octop-client/**"
+      - "scripts/enterprise/**"
+      - "contracts/octop-client/**"
+      - ".github/workflows/enterprise-closure.yml"
+  workflow_dispatch:
+
+jobs:
+  fixture-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Install JS deps
+        run: bun install
+      - name: Compile
+        run: bun run compile
+      - name: Node fixture ACs
+        run: node scripts/enterprise/verify.mjs --acceptance ALL --mode fixture --output "$PWD/artifacts/acceptance"
+      - name: Python fixture ACs/FIs
+        run: python octop-client/tools/verify.py --acceptance ALL --mode fixture --output "$PWD/artifacts/acceptance"
+      - name: Combine index and empty-evidence gate (must FAIL without full live set)
+        run: |
+          node scripts/enterprise/combine-index.mjs --output "$PWD/artifacts/acceptance"
+          echo '{"release_id":"ci-fixture","artifacts":[]}' > "$PWD/artifacts/acceptance/release-manifest.json"
+          set +e
+          node scripts/enterprise/gate.mjs \
+            --required contracts/octop-client/v1/required-acceptance.json \
+            --run-index "$PWD/artifacts/acceptance/run-index-combined.json" \
+            --release-manifest "$PWD/artifacts/acceptance/release-manifest.json" \
+            --output "$PWD/artifacts/acceptance/G-RELEASE.json"
+          code=$?
+          set -e
+          if [ "$code" -eq 0 ]; then
+            echo "unexpected G-RELEASE PASS without live evidence"
+            exit 1
+          fi
+          python - <<'PY'
+          import json
+          report = json.load(open("artifacts/acceptance/G-RELEASE.json", encoding="utf-8"))
+          assert report["gRelease"] == "FAIL"
+          print("G-RELEASE FAIL as expected for incomplete live set")
+          PY
